@@ -15,3 +15,10 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
   client.user.setActivity('SAO');
 })();
 
+const httpServer = require('http').createServer();
+const io = require('socket.io')(httpServer, {
+	cors: {
+		origin: 'http://localhost:8080',
+	},
+});
+httpServer.listen(3000);
