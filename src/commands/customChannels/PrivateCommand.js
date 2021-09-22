@@ -1,13 +1,11 @@
-const fs = require('fs');
+const CustomChannels = require('../../utils/sequelize/models/CustomChannels');
 
 module.exports = {
 	command: 'ccprivate',
 
 	async run(client, message, args) {
-		var data = JSON.parse(fs.readFileSync(__dirname + '/../../../data/customChannels.json'));
-
 		const member = message.guild.members.cache.get(message.author.id);
-		const customChannel = data.find((x) => (x.channel = member.voice.channelId));
+		const customChannel = await CustomChannels.findOne({ where: { channelId: member.voice.channelId } });
 		if (customChannel) {
 			if (customChannel.userId != member.user.id) {
 				message.reply('Not your Channel!');
