@@ -9,7 +9,7 @@ async function registerCommands(client, dir = '') {
 		if (stat.isDirectory()) registerCommands(client, path.join(dir, file));
 		if (file.endsWith('.js')) {
 			const cmd = require(path.join(filePath, file));
-			client.commands.set(cmd.name, cmd);
+			client.commands.set(cmd.command, cmd);
 
 			if (cmd.aliases) {
 				cmd.aliases.forEach((alias) => {
