@@ -2,7 +2,7 @@
 const config = require('../../slappey.json');
 
 const { Permissions } = require('discord.js');
-const fs = require('fs');
+const CustomChannels = require('../utils/sequelize/models/CustomChannels');
 
 module.exports = {
 	name: 'voiceStateUpdate',
@@ -10,22 +10,14 @@ module.exports = {
 	async run(client, oldState, newState) {
 		if (oldState.channelId == newState.channelId) return;
 
-		var data = JSON.parse(fs.readFileSync(__dirname + '/../../data/customChannels.json'));
-
-		const customChannel = data.find((x) => (x.channel = oldState.channelId));
+		var customChannel = await CustomChannels.findOne({ where: { channelId: oldState.channelId } });
 		if (customChannel) {
 			const channel = oldState.guild.channels.cache.get(customChannel.channelId);
 
 			if (channel.members.size == 0) {
 				channel.delete();
 
-				data.splice(data.indexOf(customChannel), 1);
-				fs.writeFile(
-					__dirname + '/../../data/customChannels.json',
-					JSON.stringify(data),
-					'utf8',
-					function() {}
-				);
+				CustomChannels.destroy({ where: { id: customChannel.id } });
 			}
 		}
 
@@ -48,8 +40,10 @@ module.exports = {
 				]
 			});
 
-			data.push({ userId: member.user.id, channelId: channel.id });
-			fs.writeFile(__dirname + '/../../data/customChannels.json', JSON.stringify(data), 'utf8', function() {});
+			CustomChannels.create({
+				userId: member.user.id,
+				channelId: channel.id
+			});
 
 			member.voice.setChannel(channel);
 		}
