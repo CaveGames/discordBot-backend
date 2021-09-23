@@ -17,11 +17,6 @@ module.exports = {
 		}
 
 		if (args[0] == 'private' || args[0] == 'public') {
-			if (customChannel.userId != member.user.id) {
-				message.reply('Not your Channel!');
-				return;
-			}
-
 			if (customChannel.isPrivateChannel) {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { CONNECT: null });
 				CustomChannels.update(
@@ -35,11 +30,6 @@ module.exports = {
 				message.reply('Set to private');
 			}
 		} else if (args[0] == 'hide' || args[0] == 'show') {
-			if (customChannel.userId != member.user.id) {
-				message.reply('Not your Channel!');
-				return;
-			}
-
 			if (customChannel.isHidden) {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { VIEW_CHANNEL: null });
 				CustomChannels.update({ isHidden: false }, { where: { id: customChannel.id } });
@@ -49,6 +39,21 @@ module.exports = {
 				CustomChannels.update({ isHidden: true }, { where: { id: customChannel.id } });
 				message.reply('Set to hidden');
 			}
+		} else if (args[0] == 'kick') {
+			var user = message.mentions.users.first();
+
+			if (!user) {
+				message.reply('Please select a user');
+				return;
+			}
+
+			user = message.guild.members.cache.get(user.id);
+			if (!user.voice.channelId || user.voice.channelId != customChannel.channelId) {
+				message.reply("User isn't in your Channel");
+				return;
+			}
+			user.voice.disconnect();
+			message.reply('Kicked user');
 		} else {
 			message.reply('Unknown Command');
 		}
