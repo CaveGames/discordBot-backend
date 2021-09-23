@@ -24,6 +24,11 @@ const CustomChannels = sequelize.define(
 			type: Sequelize.BOOLEAN,
 			defaultValue: false,
 			allowNull: false
+		},
+		isHidden: {
+			type: Sequelize.BOOLEAN,
+			defaultValue: false,
+			allowNull: false
 		}
 	},
 	{
