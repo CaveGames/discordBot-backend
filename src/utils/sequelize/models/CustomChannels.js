@@ -15,6 +15,11 @@ const CustomChannels = sequelize.define(
 		channelId: {
 			type: Sequelize.STRING,
 			allowNull: false
+		},
+		isPrivateChannel: {
+			type: Sequelize.BOOLEAN,
+			defaultValue: false,
+			allowNull: false
 		}
 	},
 	{
