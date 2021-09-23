@@ -16,7 +16,7 @@ module.exports = {
 			return;
 		}
 
-		if (args[0] == 'private') {
+		if (args[0] == 'private' || args[0] == 'public') {
 			if (customChannel.userId != member.user.id) {
 				message.reply('Not your Channel!');
 				return;
@@ -34,7 +34,7 @@ module.exports = {
 				CustomChannels.update({ isPrivateChannel: true }, { where: { id: customChannel.id } });
 				message.reply('Set to private');
 			}
-		} else if (args[0] == 'hide') {
+		} else if (args[0] == 'hide' || args[0] == 'show') {
 			if (customChannel.userId != member.user.id) {
 				message.reply('Not your Channel!');
 				return;
