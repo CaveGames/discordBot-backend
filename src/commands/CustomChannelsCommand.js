@@ -7,7 +7,9 @@ module.exports = {
 	async run(client, message, args) {
 		if (args[0] == 'private') {
 			const member = message.guild.members.cache.get(message.author.id);
-			const customChannel = await CustomChannels.findOne({ where: { channelId: member.voice.channelId } });
+			const customChannel = await CustomChannels.findOne({
+				where: { guildId: message.guild.id, channelId: member.voice.channelId }
+			});
 			if (customChannel) {
 				if (customChannel.userId != member.user.id) {
 					message.reply('Not your Channel!');

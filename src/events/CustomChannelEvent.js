@@ -10,7 +10,9 @@ module.exports = {
 	async run(client, oldState, newState) {
 		if (oldState.channelId == newState.channelId) return;
 
-		var customChannel = await CustomChannels.findOne({ where: { channelId: oldState.channelId } });
+		var customChannel = await CustomChannels.findOne({
+			where: { guildId: oldState.guild.id, channelId: oldState.channelId }
+		});
 		if (customChannel) {
 			const channel = oldState.guild.channels.cache.get(customChannel.channelId);
 
@@ -41,8 +43,9 @@ module.exports = {
 			});
 
 			CustomChannels.create({
-				userId: member.user.id,
-				channelId: channel.id
+				guildId: newState.guild.id,
+				channelId: channel.id,
+				userId: member.user.id
 			});
 
 			member.voice.setChannel(channel);

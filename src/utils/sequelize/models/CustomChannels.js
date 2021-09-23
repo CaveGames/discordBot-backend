@@ -8,11 +8,15 @@ const CustomChannels = sequelize.define(
 			autoIncrement: true,
 			primaryKey: true
 		},
-		userId: {
+		guildId: {
 			type: Sequelize.STRING,
 			allowNull: false
 		},
 		channelId: {
+			type: Sequelize.STRING,
+			allowNull: false
+		},
+		userId: {
 			type: Sequelize.STRING,
 			allowNull: false
 		},
