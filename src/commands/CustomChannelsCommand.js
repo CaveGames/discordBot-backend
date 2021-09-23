@@ -9,10 +9,43 @@ module.exports = {
 		const customChannel = await CustomChannels.findOne({
 			where: { guildId: message.guild.id, channelId: member.voice.channelId }
 		});
-		const channel = message.guild.channels.cache.get(customChannel.channelId);
 
 		if (!customChannel) {
 			message.reply('Connect to a custom Channel first');
+			return;
+		}
+
+		const channel = message.guild.channels.cache.get(customChannel.channelId);
+
+		if (args.length == 0) {
+			message.reply({
+				embeds: [
+					{
+						title: channel.name,
+						fields: [
+							{
+								name: 'Eigentümer',
+								value: '<@' + customChannel.userId + '>'
+							},
+							{
+								name: 'Status',
+								value: customChannel.isPrivateChannel ? 'Privat' : 'Öffentlich',
+								inline: true
+							},
+							{
+								name: 'Sichtbarkeit',
+								value: customChannel.isHidden ? 'Versteckt' : 'Sichtbar',
+								inline: true
+							}
+						]
+					}
+				]
+			});
+			return;
+		}
+
+		if (customChannel.userId != member.user.id) {
+			message.reply('Not your Channel!');
 			return;
 		}
 
@@ -55,7 +88,7 @@ module.exports = {
 			user.voice.disconnect();
 			message.reply('Kicked user');
 		} else {
-			message.reply('Unknown Command');
+			message.reply('Invalid Argument');
 		}
 	}
 };
