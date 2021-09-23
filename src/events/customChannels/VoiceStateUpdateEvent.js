@@ -1,8 +1,8 @@
 // https://discord.js.org/#/docs/main/stable/class/Client?scrollTo=e-voiceStateUpdate
-const config = require('../../slappey.json');
+const config = require('../../../slappey.json');
 
 const { Permissions } = require('discord.js');
-const CustomChannels = require('../utils/sequelize/models/CustomChannels');
+const CustomChannels = require('../../utils/sequelize/models/CustomChannels');
 
 module.exports = {
 	name: 'voiceStateUpdate',
@@ -15,6 +15,10 @@ module.exports = {
 		});
 		if (customChannel) {
 			const channel = oldState.guild.channels.cache.get(customChannel.channelId);
+
+			if (!channel) {
+				return;
+			}
 
 			if (channel.members.size == 0) {
 				channel.delete();
