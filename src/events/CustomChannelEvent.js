@@ -34,9 +34,8 @@ module.exports = {
 						id: member.user.id,
 						allow: [
 							Permissions.FLAGS.MANAGE_CHANNELS,
-							Permissions.FLAGS.CONNECT,
-							Permissions.FLAGS.MUTE_MEMBERS,
-							Permissions.FLAGS.DEAFEN_MEMBERS
+							Permissions.FLAGS.VIEW_CHANNEL,
+							Permissions.FLAGS.CONNECT
 						]
 					}
 				]
