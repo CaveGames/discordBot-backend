@@ -45,7 +45,7 @@ module.exports = {
 			return;
 		}
 
-		if (customChannel.userId != member.user.id) {
+		if (customChannel.userId != member.user.id && !member.roles.cache.get(config.customChannels.bypassRoleId)) {
 			message.reply('Not your Channel!');
 			return;
 		}
