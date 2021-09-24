@@ -3,11 +3,14 @@ const { registerCommands, registerEvents } = require('./utils/registry');
 
 const config = require('../slappey.json');
 
+require('./database');
+
 const client = new Client({
 	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES],
 });
 
 (async () => {
+
 	client.commands = new Map();
 	client.events = new Map();
 	client.prefix = config.prefix;

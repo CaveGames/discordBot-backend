@@ -1,5 +1,5 @@
 // https://discord.js.org/#/docs/main/stable/class/Client?scrollTo=e-channelDelete
-const CustomChannels = require('../../utils/sequelize/models/CustomChannels');
+const { CustomChannels } = require('../../database').models;
 
 module.exports = {
 	name: 'channelDelete',

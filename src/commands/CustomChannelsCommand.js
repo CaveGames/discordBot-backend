@@ -1,5 +1,5 @@
 const { Permissions } = require('discord.js');
-const CustomChannels = require('../utils/sequelize/models/CustomChannels');
+const { CustomChannels } = require('../database').models;
 
 const config = require('../../slappey.json');
 
