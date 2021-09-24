@@ -1,6 +1,8 @@
 const { Permissions } = require('discord.js');
 const CustomChannels = require('../utils/sequelize/models/CustomChannels');
 
+const config = require('../../slappey.json');
+
 module.exports = {
 	command: 'cc',
 
@@ -84,6 +86,10 @@ module.exports = {
 			}
 			if (kickMember.user.id == member.user.id) {
 				message.reply("You can't kick yourself out!");
+				return;
+			}
+			if(kickMember.roles.cache.get(config.customChannels.bypassRoleId)) {
+				message.reply("You can't kick this user!");
 				return;
 			}
 
