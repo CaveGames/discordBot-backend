@@ -1,11 +1,6 @@
 const DataTypes = require('sequelize');
 
 module.exports = {
-	id: {
-		type: DataTypes.INTEGER,
-		autoIncrement: true,
-		primaryKey: true,
-	},
 	guildId: {
 		type: DataTypes.STRING,
 		allowNull: false,
