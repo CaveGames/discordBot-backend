@@ -72,7 +72,7 @@ module.exports = {
 		} else if (args[0] == 'kick') {
 			let kickUser = message.mentions.users.first();
 
-			if (!user) {
+			if (!kickUser) {
 				message.reply('Please select a user');
 				return;
 			}
