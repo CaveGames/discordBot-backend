@@ -23,4 +23,4 @@ module.exports = {
 		defaultValue: false,
 		allowNull: false,
 	},
-}
+};

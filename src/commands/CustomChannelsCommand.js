@@ -1,4 +1,3 @@
-const { Permissions } = require('discord.js');
 const { CustomChannels } = require('../database').models;
 
 const config = require('../../slappey.json');
@@ -56,46 +55,51 @@ module.exports = {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { CONNECT: null });
 				CustomChannels.update({ isPrivateChannel: false, isHidden: false }, { where: { id: customChannel.id } });
 				message.reply('Set to public');
-			} else {
+			}
+			else {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { CONNECT: false });
 				CustomChannels.update({ isPrivateChannel: true }, { where: { id: customChannel.id } });
 				message.reply('Set to private');
 			}
-		} else if (args[0] == 'hide' || args[0] == 'show') {
+		}
+		else if (args[0] == 'hide' || args[0] == 'show') {
 			if (customChannel.isHidden) {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { VIEW_CHANNEL: null });
 				CustomChannels.update({ isHidden: false }, { where: { id: customChannel.id } });
 				message.reply('Set to shown');
-			} else {
+			}
+			else {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { VIEW_CHANNEL: false });
 				CustomChannels.update({ isHidden: true }, { where: { id: customChannel.id } });
 				message.reply('Set to hidden');
 			}
-		} else if (args[0] == 'kick') {
-			let kickUser = message.mentions.users.first();
+		}
+		else if (args[0] == 'kick') {
+			const kickUser = message.mentions.users.first();
 
 			if (!kickUser) {
 				message.reply('Please select a user');
 				return;
 			}
 
-			kickMember = message.guild.members.cache.get(kickUser.id);
+			const kickMember = message.guild.members.cache.get(kickUser.id);
 			if (!kickMember.voice.channelId || kickMember.voice.channelId != customChannel.channelId) {
-				message.reply("User isn't in your Channel");
+				message.reply('User isnt in your Channel');
 				return;
 			}
 			if (kickMember.user.id == member.user.id) {
-				message.reply("You can't kick yourself out!");
+				message.reply('You cant kick yourself out!');
 				return;
 			}
-			if(kickMember.roles.cache.get(config.customChannels.bypassRoleId)) {
-				message.reply("You can't kick this user!");
+			if (kickMember.roles.cache.get(config.customChannels.bypassRoleId)) {
+				message.reply('You cant kick this user!');
 				return;
 			}
 
 			kickMember.voice.disconnect();
 			message.reply('Kicked user');
-		} else {
+		}
+		else {
 			message.reply('Invalid Argument');
 		}
 	},
