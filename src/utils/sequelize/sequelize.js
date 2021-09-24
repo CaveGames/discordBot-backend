@@ -4,10 +4,10 @@ const sequelize = new Sequelize('', '', '', {
 	host: 'localhost',
 	dialect: 'sqlite',
 	logging: false,
-	storage: 'data.sqlite'
+	storage: 'data.sqlite',
 });
 
 module.exports = {
 	sequelize,
-	Sequelize
+	Sequelize,
 };

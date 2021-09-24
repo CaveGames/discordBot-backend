@@ -5,12 +5,12 @@ module.exports = {
 	name: 'channelDelete',
 
 	async run(client, channel) {
-		var customChannel = await CustomChannels.findOne({
-			where: { guildId: channel.guild.id, channelId: channel.id }
+		const customChannel = await CustomChannels.findOne({
+			where: { guildId: channel.guild.id, channelId: channel.id },
 		});
 
 		if (customChannel) {
 			CustomChannels.destroy({ where: { id: customChannel.id } });
 		}
-	}
+	},
 };

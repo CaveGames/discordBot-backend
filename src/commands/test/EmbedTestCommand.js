@@ -14,10 +14,10 @@ module.exports = {
 		const { avatar, banner, accent_color } = await axios
 			.get(`https://discord.com/api/users/${user.id}`, {
 				headers: {
-					Authorization: `Bot ${client.token}`
-				}
+					Authorization: `Bot ${client.token}`,
+				},
 			})
-			.then((res) => {
+			.then(res => {
 				return res.data;
 			});
 
@@ -37,12 +37,10 @@ module.exports = {
 		}
 
 		if (banner) {
-			const background = await Canvas.loadImage(
-				`https://cdn.discordapp.com/banners/${user.id}/${banner}.png?size=512`
-			);
+			const background = await Canvas.loadImage(`https://cdn.discordapp.com/banners/${user.id}/${banner}.png?size=512`);
 			const scale = Math.max(canvas.width / background.width, canvas.height / background.height);
-			var x = canvas.width / 2 - background.width / 2 * scale;
-			var y = canvas.height / 2 - background.height / 2 * scale;
+			var x = canvas.width / 2 - (background.width / 2) * scale;
+			var y = canvas.height / 2 - (background.height / 2) * scale;
 			context.drawImage(background, x, y, background.width * scale, background.height * scale);
 		} else {
 			context.fillRect(0, 0, canvas.width, canvas.height);
@@ -79,6 +77,6 @@ module.exports = {
 			exampleEmbed.setColor(accent_color);
 		}
 
-		message.channel.send({ embeds: [ exampleEmbed ], files: [ attachment ] });
-	}
+		message.channel.send({ embeds: [exampleEmbed], files: [attachment] });
+	},
 };

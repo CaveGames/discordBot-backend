@@ -4,7 +4,7 @@ const { registerCommands, registerEvents } = require('./utils/registry');
 const config = require('../slappey.json');
 
 const client = new Client({
-	intents: [ Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES ]
+	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES],
 });
 
 (async () => {
@@ -19,9 +19,9 @@ const client = new Client({
 })();
 
 const httpServer = require('http').createServer();
-const io = require('socket.io')(httpServer, {
+require('socket.io')(httpServer, {
 	cors: {
-		origin: 'http://localhost:8080'
-	}
+		origin: 'http://localhost:8080',
+	},
 });
 httpServer.listen(3000);

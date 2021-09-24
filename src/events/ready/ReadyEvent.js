@@ -7,5 +7,5 @@ module.exports = {
 		CustomChannels.sync({ alter: true });
 
 		console.log(client.user.tag + ' has logged in.');
-	}
+	},
 };

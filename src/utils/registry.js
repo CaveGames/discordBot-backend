@@ -12,7 +12,7 @@ async function registerCommands(client, dir = '') {
 			client.commands.set(cmd.command, cmd);
 
 			if (cmd.aliases) {
-				cmd.aliases.forEach((alias) => {
+				cmd.aliases.forEach(alias => {
 					client.commands.set(alias, cmd);
 				});
 			}
@@ -36,5 +36,5 @@ async function registerEvents(client, dir = '') {
 
 module.exports = {
 	registerCommands,
-	registerEvents
+	registerEvents,
 };

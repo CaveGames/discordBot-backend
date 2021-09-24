@@ -10,8 +10,8 @@ module.exports = {
 	async run(client, oldState, newState) {
 		if (oldState.channelId == newState.channelId) return;
 
-		var customChannel = await CustomChannels.findOne({
-			where: { guildId: oldState.guild.id, channelId: oldState.channelId }
+		const customChannel = await CustomChannels.findOne({
+			where: { guildId: oldState.guild.id, channelId: oldState.channelId },
 		});
 		if (customChannel) {
 			const channel = oldState.guild.channels.cache.get(customChannel.channelId);
@@ -36,22 +36,18 @@ module.exports = {
 				permissionOverwrites: [
 					{
 						id: member.user.id,
-						allow: [
-							Permissions.FLAGS.MANAGE_CHANNELS,
-							Permissions.FLAGS.VIEW_CHANNEL,
-							Permissions.FLAGS.CONNECT
-						]
-					}
-				]
+						allow: [Permissions.FLAGS.MANAGE_CHANNELS, Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.CONNECT],
+					},
+				],
 			});
 
 			CustomChannels.create({
 				guildId: newState.guild.id,
 				channelId: channel.id,
-				userId: member.user.id
+				userId: member.user.id,
 			});
 
 			member.voice.setChannel(channel);
 		}
-	}
+	},
 };

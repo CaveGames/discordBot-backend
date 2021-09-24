@@ -7,7 +7,7 @@ module.exports = {
 	async run(client, message, args) {
 		const member = message.guild.members.cache.get(message.author.id);
 		const customChannel = await CustomChannels.findOne({
-			where: { guildId: message.guild.id, channelId: member.voice.channelId }
+			where: { guildId: message.guild.id, channelId: member.voice.channelId },
 		});
 
 		if (!customChannel) {
@@ -25,21 +25,21 @@ module.exports = {
 						fields: [
 							{
 								name: 'Eigentümer',
-								value: '<@' + customChannel.userId + '>'
+								value: '<@' + customChannel.userId + '>',
 							},
 							{
 								name: 'Status',
 								value: customChannel.isPrivateChannel ? 'Privat' : 'Öffentlich',
-								inline: true
+								inline: true,
 							},
 							{
 								name: 'Sichtbarkeit',
 								value: customChannel.isHidden ? 'Versteckt' : 'Sichtbar',
-								inline: true
-							}
-						]
-					}
-				]
+								inline: true,
+							},
+						],
+					},
+				],
 			});
 			return;
 		}
@@ -52,10 +52,7 @@ module.exports = {
 		if (args[0] == 'private' || args[0] == 'public') {
 			if (customChannel.isPrivateChannel) {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { CONNECT: null });
-				CustomChannels.update(
-					{ isPrivateChannel: false, isHidden: false },
-					{ where: { id: customChannel.id } }
-				);
+				CustomChannels.update({ isPrivateChannel: false, isHidden: false }, { where: { id: customChannel.id } });
 				message.reply('Set to public');
 			} else {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { CONNECT: false });
@@ -73,7 +70,7 @@ module.exports = {
 				message.reply('Set to hidden');
 			}
 		} else if (args[0] == 'kick') {
-			var user = message.mentions.users.first();
+			let user = message.mentions.users.first();
 
 			if (!user) {
 				message.reply('Please select a user');
@@ -90,5 +87,5 @@ module.exports = {
 		} else {
 			message.reply('Invalid Argument');
 		}
-	}
+	},
 };

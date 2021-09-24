@@ -6,35 +6,35 @@ const CustomChannels = sequelize.define(
 		id: {
 			type: Sequelize.INTEGER,
 			autoIncrement: true,
-			primaryKey: true
+			primaryKey: true,
 		},
 		guildId: {
 			type: Sequelize.STRING,
-			allowNull: false
+			allowNull: false,
 		},
 		channelId: {
 			type: Sequelize.STRING,
-			allowNull: false
+			allowNull: false,
 		},
 		userId: {
 			type: Sequelize.STRING,
-			allowNull: false
+			allowNull: false,
 		},
 		isPrivateChannel: {
 			type: Sequelize.BOOLEAN,
 			defaultValue: false,
-			allowNull: false
+			allowNull: false,
 		},
 		isHidden: {
 			type: Sequelize.BOOLEAN,
 			defaultValue: false,
-			allowNull: false
-		}
+			allowNull: false,
+		},
 	},
 	{
 		freezeTableName: true,
-		timestamps: false
-	}
+		timestamps: false,
+	},
 );
 
 module.exports = CustomChannels;
