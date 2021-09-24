@@ -70,19 +70,24 @@ module.exports = {
 				message.reply('Set to hidden');
 			}
 		} else if (args[0] == 'kick') {
-			let user = message.mentions.users.first();
+			let kickUser = message.mentions.users.first();
 
 			if (!user) {
 				message.reply('Please select a user');
 				return;
 			}
 
-			user = message.guild.members.cache.get(user.id);
-			if (!user.voice.channelId || user.voice.channelId != customChannel.channelId) {
+			kickMember = message.guild.members.cache.get(kickUser.id);
+			if (!kickMember.voice.channelId || kickMember.voice.channelId != customChannel.channelId) {
 				message.reply("User isn't in your Channel");
 				return;
 			}
-			user.voice.disconnect();
+			if (kickMember.user.id == member.user.id) {
+				message.reply("You can't kick yourself out!");
+				return;
+			}
+
+			kickMember.voice.disconnect();
 			message.reply('Kicked user');
 		} else {
 			message.reply('Invalid Argument');
