@@ -37,7 +37,7 @@ Object.keys(models).forEach(key => {
 				console.log(definition.name + ' belongs to ' + association.table);
 				break;
 			case 'hasMany':
-				models[definition.name].hasMany(models[association.table], { as: 'bans' });
+				models[definition.name].hasMany(models[association.table], association.options);
 				console.log(definition.name + ' has many ' + association.table);
 				break;
 			default:
