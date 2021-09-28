@@ -10,20 +10,42 @@ const connection = new Sequelize('', '', '', {
 });
 
 const models = {};
+const definitions = {};
 
 fs.readdirSync(path.join(__dirname, 'definitions'))
 	.filter(function(file) {
 		return file.endsWith('.js') !== 0 && file !== 'index.js';
 	})
 	.forEach(function(file) {
-		const name = file.replace('.js', '');
 		const model = require(path.join(__dirname, 'definitions', file));
 
-		models[name] = connection.define(name, model, {
+		definitions[model.name] = model;
+		models[model.name] = connection.define(model.name, model.table, {
 			freezeTableName: true,
 			timestamps: false,
 		});
 	});
+
+Object.keys(models).forEach(key => {
+	const definition = definitions[key];
+
+	if (definition.associations) {
+		Object.values(definition.associations).forEach(association => {
+			switch (association.type) {
+			case 'belongsTo':
+				models[definition.name].belongsTo(models[association.table], association.options);
+				console.log(definition.name + ' belongs to ' + association.table);
+				break;
+			case 'hasMany':
+				models[definition.name].hasMany(models[association.table], { as: 'bans' });
+				console.log(definition.name + ' has many ' + association.table);
+				break;
+			default:
+				break;
+			}
+		});
+	}
+});
 
 module.exports = {
 	connection,
