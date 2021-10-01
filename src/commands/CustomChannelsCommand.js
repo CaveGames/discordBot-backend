@@ -1,4 +1,4 @@
-const { CustomChannels } = require('../database').models;
+const { CustomChannels, CustomChannelBans } = require('../database').models;
 
 const config = require('../../slappey.json');
 
@@ -98,6 +98,54 @@ module.exports = {
 
 			kickMember.voice.disconnect();
 			message.reply('Kicked user');
+		}
+		else if (args[0] == 'ban' || args[0] == 'unban') {
+			const banUser = message.mentions.users.first();
+
+			if (!banUser) {
+				message.reply('Please select a user');
+				return;
+			}
+
+			const banMember = message.guild.members.cache.get(banUser.id);
+			if (banMember.user.id == member.user.id) {
+				message.reply('You cant ban yourself!');
+				return;
+			}
+			if (banMember.roles.cache.get(config.customChannels.bypassRoleId)) {
+				message.reply('You cant ban this user!');
+				return;
+			}
+
+			const ban = await CustomChannelBans.findOne({
+				where: { CustomChannelId: customChannel.id, userId: banMember.user.id },
+			});
+
+			if (ban) {
+				CustomChannelBans.destroy({
+					where: {
+						CustomChannelId: customChannel.id,
+						userId: banMember.user.id,
+					},
+				});
+
+				channel.permissionOverwrites.edit(banMember.user.id, { CONNECT: null });
+				message.reply('Unbanned user');
+			}
+			else {
+				CustomChannelBans.create({
+					CustomChannelId: customChannel.id,
+					userId: banMember.user.id,
+				});
+
+				channel.permissionOverwrites.edit(banMember.user.id, { CONNECT: false });
+
+				if (banMember.voice.channelId && banMember.voice.channelId == customChannel.channelId) {
+					banMember.voice.disconnect();
+				}
+
+				message.reply('Banned user');
+			}
 		}
 		else {
 			message.reply('Invalid Argument');
