@@ -29,6 +29,9 @@ function runCmd(cmd, cmdClient, cmdMessage, cmdArgs) {
 	if (cmd.onlyAdmin) {
 		if (cmdMessage.member.roles.cache.get(config.adminRole) == null) return;
 	}
+	else if (config.botChannelId != '') {
+		if (cmdMessage.channelId != config.botChannelId) return;
+	}
 
 	cmd.run(cmdClient, cmdMessage, cmdArgs);
 }
