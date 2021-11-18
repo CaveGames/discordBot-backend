@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs').promises;
+const config = require('../../slappey.json');
 
 async function registerCommands(client, dir = '') {
 	const filePath = path.join(__dirname, dir);
@@ -9,15 +10,27 @@ async function registerCommands(client, dir = '') {
 		if (stat.isDirectory()) registerCommands(client, path.join(dir, file));
 		if (file.endsWith('.js')) {
 			const cmd = require(path.join(filePath, file));
-			client.commands.set(cmd.command, cmd);
+			client.commands.set(cmd.command, function(cmdClient, cmdMessage, cmdArgs) {
+				runCmd(cmd, cmdClient, cmdMessage, cmdArgs);
+			});
 
 			if (cmd.aliases) {
 				cmd.aliases.forEach(alias => {
-					client.commands.set(alias, cmd);
+					client.commands.set(alias, function(cmdClient, cmdMessage, cmdArgs) {
+						runCmd(cmd, cmdClient, cmdMessage, cmdArgs);
+					});
 				});
 			}
 		}
 	}
+}
+
+function runCmd(cmd, cmdClient, cmdMessage, cmdArgs) {
+	if (cmd.onlyAdmin) {
+		if (cmdMessage.member.roles.cache.get(config.adminRole) == null) return;
+	}
+
+	cmd.run(cmdClient, cmdMessage, cmdArgs);
 }
 
 async function registerEvents(client, dir = '') {
