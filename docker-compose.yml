@@ -6,4 +6,6 @@ services:
     ports:
       - 3000:3000
     volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
       - .:/usr/app
