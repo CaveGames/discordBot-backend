@@ -27,7 +27,7 @@ async function registerCommands(client, dir = '') {
 
 function runCmd(cmd, cmdClient, cmdMessage, cmdArgs) {
 	if (cmd.onlyAdmin) {
-		if (cmdMessage.member.roles.cache.get(config.adminRole) == null) return;
+		if (cmdMessage.member.roles.cache.get(config.adminRoleId) == null) return;
 	}
 	else if (config.botChannelId != '') {
 		if (cmdMessage.channelId != config.botChannelId) return;
