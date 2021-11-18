@@ -1,6 +1,6 @@
 const { CustomChannels, CustomChannelBans } = require('../database').models;
 
-const config = require('../../slappey.json');
+const config = require('../../config.json');
 
 module.exports = {
 	command: 'cc',

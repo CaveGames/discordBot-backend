@@ -1,5 +1,5 @@
 // https://discord.js.org/#/docs/main/stable/class/Client?scrollTo=e-voiceStateUpdate
-const config = require('../../../slappey.json');
+const config = require('../../../config.json');
 
 const { Permissions } = require('discord.js');
 const { CustomChannels } = require('../../database').models;

@@ -1,5 +1,5 @@
-const { UserData } = require('../../database').models;
-const config = require('../../../slappey.json');
+const { UserData } = require('../database').models;
+const config = require('../../config.json');
 
 module.exports = {
 	name: 'guildMemberAdd',

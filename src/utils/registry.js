@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs').promises;
-const config = require('../../slappey.json');
+const config = require('../../config.json');
 
 async function registerCommands(client, dir = '') {
 	const filePath = path.join(__dirname, dir);

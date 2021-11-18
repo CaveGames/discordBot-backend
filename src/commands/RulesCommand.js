@@ -1,7 +1,7 @@
 const { Util } = require('discord.js');
 const emoji = require('emoji-dictionary');
 
-const config = require('../../slappey.json');
+const config = require('../../config.json');
 
 module.exports = {
 	command: 'rules',
