@@ -3,11 +3,12 @@ const DataTypes = require('sequelize');
 module.exports = {
 	name: 'UserData',
 	table: {
-		guildId: {
+		userId: {
 			type: DataTypes.STRING,
 			allowNull: false,
+			primaryKey: true,
 		},
-		userId: {
+		guildId: {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},

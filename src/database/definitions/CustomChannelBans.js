@@ -14,9 +14,6 @@ module.exports = {
 			table: 'CustomChannels',
 			options: {
 				onDelete: 'CASCADE',
-				foreignKey: {
-					allowNull: false,
-				},
 			},
 		},
 	],
