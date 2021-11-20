@@ -4,7 +4,7 @@ module.exports = {
 	name: 'ready',
 
 	async run(client) {
-		connection.sync({ alter: true });
+		connection.sync();
 
 		console.log(client.user.tag + ' has logged in.');
 	},
