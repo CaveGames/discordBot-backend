@@ -3,10 +3,6 @@ const DataTypes = require('sequelize');
 module.exports = {
 	name: 'CustomChannels',
 	table: {
-		guildId: {
-			type: DataTypes.STRING,
-			allowNull: false,
-		},
 		channelId: {
 			type: DataTypes.STRING,
 			allowNull: false,
@@ -27,6 +23,17 @@ module.exports = {
 		},
 	},
 	associations: [
+		{
+			type: 'belongsTo',
+			table: 'GuildData',
+			options: {
+				foreignKey: {
+					name: 'guildId',
+					type: DataTypes.STRING,
+				},
+				onDelete: 'CASCADE',
+			},
+		},
 		{
 			type: 'hasMany',
 			table: 'CustomChannelBans',
