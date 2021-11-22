@@ -30,7 +30,6 @@ module.exports = {
 			options: {
 				foreignKey: {
 					name: 'guildId',
-					type: DataTypes.STRING,
 				},
 				onDelete: 'CASCADE',
 			},
