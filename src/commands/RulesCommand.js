@@ -12,30 +12,6 @@ module.exports = {
 		const test = await channel.messages.fetch();
 		test.forEach(msg => msg.delete());
 
-		// let rules = config.rules.text;
-
-		// config.rules.text.match(/@\w+/g).forEach(match => {
-		// 	const role = message.guild.roles.cache.find(x => x.name === match.substring(1));
-		// 	if (role) {
-		// 		rules = rules.replace(match, '<@&' + role.id + '>');
-		// 		return;
-		// 	}
-		// 	const user = message.guild.members.cache.find(x => x.username === match.substring(1));
-		// 	if (user) {
-		// 		rules = rules.replace(match, '<@' + role.id + '>');
-		// 		return;
-		// 	}
-		// });
-
-		// config.rules.text.match(/#\w+/g).forEach(match => {
-		// 	console.log(match);
-		// 	const mentionedChannel = message.guild.channels.cache.find(x => x.name === match.substring(1));
-		// 	if (mentionedChannel) {
-		// 		rules = rules.replace(match, '<@#' + mentionedChannel.id + '>');
-		// 		return;
-		// 	}
-		// });
-
 		const chunks = Util.splitMessage(config.rules.text, { char: config.rules.paragraphSplitter });
 
 		const embeds = [];
