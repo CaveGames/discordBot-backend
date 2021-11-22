@@ -8,7 +8,7 @@ module.exports = {
 			allowNull: false,
 			primaryKey: true,
 		},
-		firstJoinDate: {
+		joinDate: {
 			type: DataTypes.DATE,
 			defaultValue: DataTypes.NOW,
 			allowNull: false,
