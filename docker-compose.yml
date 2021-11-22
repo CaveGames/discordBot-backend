@@ -14,6 +14,8 @@ services:
   sql:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
+    cap_add:
+      - SYS_NICE
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: 'true'
       MYSQL_DATABASE: discordBot
