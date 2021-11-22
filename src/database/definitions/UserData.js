@@ -23,4 +23,17 @@ module.exports = {
 			allowNull: false,
 		},
 	},
+	associations: [
+		{
+			type: 'belongsTo',
+			table: 'GuildData',
+			options: {
+				foreignKey: {
+					name: 'guildId',
+					type: DataTypes.STRING,
+				},
+				onDelete: 'CASCADE',
+			},
+		},
+	],
 };

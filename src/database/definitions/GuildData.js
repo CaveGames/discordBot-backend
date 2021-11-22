@@ -26,5 +26,12 @@ module.exports = {
 				foreignKey: 'guildId',
 			},
 		},
+		{
+			type: 'hasMany',
+			table: 'UserData',
+			options: {
+				foreignKey: 'guildId',
+			},
+		},
 	],
 };
