@@ -9,8 +9,8 @@ module.exports = {
 
 	async run(client, message) {
 		const channel = message.guild.channels.cache.get(config.rules.channelId);
-		const test = await channel.messages.fetch();
-		test.forEach(msg => msg.delete());
+		const messages = await channel.messages.fetch();
+		messages.forEach(msg => msg.delete());
 
 		const chunks = Util.splitMessage(config.rules.text, { char: config.rules.paragraphSplitter });
 
