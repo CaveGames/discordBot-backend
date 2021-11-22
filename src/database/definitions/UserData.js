@@ -11,6 +11,7 @@ module.exports = {
 		guildId: {
 			type: DataTypes.STRING,
 			allowNull: false,
+			primaryKey: true,
 		},
 		firstJoinDate: {
 			type: DataTypes.DATE,
