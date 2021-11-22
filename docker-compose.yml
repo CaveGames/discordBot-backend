@@ -9,6 +9,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
       - .:/usr/app
+    depends_on:
+      - sql
   sql:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
