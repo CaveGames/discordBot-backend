@@ -2,11 +2,10 @@ const Sequelize = require('sequelize');
 const fs = require('fs');
 const path = require('path');
 
-const connection = new Sequelize('', '', '', {
-	host: 'localhost',
-	dialect: 'sqlite',
+const connection = new Sequelize('discordBot', 'bot', 'password', {
+	host: 'sql',
+	dialect: 'mysql',
 	logging: false,
-	storage: 'data.sqlite',
 });
 
 const models = {};
