@@ -36,7 +36,7 @@ module.exports = {
 				},
 				{
 					where: {
-						id: userData.id,
+						userId: userData.userId,
 					},
 				},
 			);
