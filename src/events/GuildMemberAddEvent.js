@@ -15,9 +15,11 @@ module.exports = {
 		});
 
 		if (userData) {
-			config.rules.verifiedRoleIds.forEach(role => {
-				member.roles.add(member.guild.roles.cache.get(role));
-			});
+			if (userData.isVerified) {
+				config.rules.verifiedRoleIds.forEach(role => {
+					member.roles.add(member.guild.roles.cache.get(role));
+				});
+			}
 		}
 		else {
 			UserData.create({
