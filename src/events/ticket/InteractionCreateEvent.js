@@ -1,4 +1,4 @@
-const { UserData } = require('../../database').models;
+const { UserData, Tickets } = require('../../database').models;
 const config = require('../../../config.json');
 
 module.exports = {
@@ -15,7 +15,17 @@ module.exports = {
 					guildId: interaction.guild.id,
 					userId: interaction.user.id,
 				},
+				include: 'tickets',
 			});
+
+			if (userData.tickets.length > 0) {
+				const foundTicket = userData.tickets.find(x => x.category == interaction.values[0] && x.isOpen);
+
+				if (foundTicket) {
+					interaction.reply({ content: ':x: Du hast bereits ein Ticket dieser Kategorie offen.', ephemeral: true });
+					return;
+				}
+			}
 
 			Tickets.create({
 				guildId: interaction.guild.id,
