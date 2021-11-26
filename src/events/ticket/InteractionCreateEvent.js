@@ -1,5 +1,6 @@
 const { UserData, Tickets } = require('../../database').models;
 const { Permissions } = require('discord.js');
+const emoji = require('emoji-dictionary');
 const config = require('../../../config.json');
 
 module.exports = {
@@ -52,6 +53,33 @@ module.exports = {
 					{
 						id: config.tickets.supporterRoleId,
 						allow: [Permissions.FLAGS.VIEW_CHANNEL],
+					},
+				],
+			});
+
+			channel.send({
+				embeds: [
+					{
+						title: 'Ticket System',
+						description:
+							'Willkommen <@' +
+							member.user.id +
+							'> zu deinem Ticket!\n**Ein Teammitglied wird in kürze für dich da sein!**\nBitte erläutere schonmal dein Anliegen.',
+						color: config.accentColor,
+					},
+				],
+				components: [
+					{
+						type: 1,
+						components: [
+							{
+								type: 2,
+								style: 2,
+								label: 'Ticket schließen',
+								emoji: emoji.getUnicode('lock'),
+								custom_id: 'ticket_close',
+							},
+						],
 					},
 				],
 			});
