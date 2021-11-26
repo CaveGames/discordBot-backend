@@ -7,11 +7,9 @@ module.exports = {
 	name: 'interactionCreate',
 
 	async run(client, interaction) {
-		if (interaction.componentType != 'SELECT_MENU') return;
+		const member = interaction.guild.members.cache.get(interaction.user.id);
 
-		if (interaction.customId == 'ticket_select') {
-			const member = interaction.guild.members.cache.get(interaction.user.id);
-
+		if (interaction.componentType == 'SELECT_MENU' && interaction.customId == 'ticket_select') {
 			const userData = await UserData.findOne({
 				where: {
 					guildId: interaction.guild.id,
@@ -105,6 +103,26 @@ module.exports = {
 					},
 				],
 				ephemeral: true,
+			});
+		}
+		else if (interaction.componentType == 'BUTTON' && interaction.customId == 'ticket_close') {
+			const ticket = await Tickets.findOne({
+				where: {
+					guildId: interaction.guild.id,
+					channelId: interaction.channelId,
+				},
+			});
+
+			if (!ticket) return;
+
+			const channel = interaction.guild.channels.cache.get(interaction.channelId);
+			channel.delete();
+
+			ticket.update({
+				channelId: null,
+				isOpen: false,
+				closedDate: Date.now(),
+				closedUserId: interaction.user.id,
 			});
 		}
 	},
