@@ -18,12 +18,12 @@ module.exports = {
 		isOpen: {
 			type: DataTypes.BOOLEAN,
 			allowNull: false,
-			default: true,
+			defaultValue: true,
 		},
 		openedDate: {
 			type: DataTypes.DATE,
 			allowNull: false,
-			default: DataTypes.NOW,
+			defaultValue: DataTypes.NOW,
 		},
 		closedDate: {
 			type: DataTypes.DATE,
