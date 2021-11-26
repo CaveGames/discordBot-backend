@@ -1,27 +1,35 @@
 const DataTypes = require('sequelize');
 
 module.exports = {
-	name: 'UserData',
+	name: 'Tickets',
 	table: {
-		userId: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			primaryKey: true,
-		},
 		guildId: {
 			type: DataTypes.STRING,
 			allowNull: false,
-			primaryKey: true,
 		},
-		firstJoinDate: {
-			type: DataTypes.DATE,
-			defaultValue: DataTypes.NOW,
+		ownerId: {
+			type: DataTypes.STRING,
 			allowNull: false,
 		},
-		isVerified: {
+		category: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+		},
+		isOpen: {
 			type: DataTypes.BOOLEAN,
-			defaultValue: false,
 			allowNull: false,
+			default: true,
+		},
+		openedDate: {
+			type: DataTypes.DATE,
+			allowNull: false,
+			default: DataTypes.NOW,
+		},
+		closedDate: {
+			type: DataTypes.DATE,
+		},
+		closedUserId: {
+			type: DataTypes.STRING,
 		},
 	},
 	associations: [
@@ -36,8 +44,8 @@ module.exports = {
 			},
 		},
 		{
-			type: 'hasMany',
-			table: 'Tickets',
+			type: 'belongsTo',
+			table: 'UserData',
 			options: {
 				as: 'tickets',
 				foreignKey: {
@@ -46,8 +54,8 @@ module.exports = {
 			},
 		},
 		{
-			type: 'hasMany',
-			table: 'Tickets',
+			type: 'belongsTo',
+			table: 'UserData',
 			options: {
 				as: 'closedTickets',
 				foreignKey: {

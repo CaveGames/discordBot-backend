@@ -33,5 +33,12 @@ module.exports = {
 				foreignKey: 'guildId',
 			},
 		},
+		{
+			type: 'hasMany',
+			table: 'Tickets',
+			options: {
+				foreignKey: 'guildId',
+			},
+		},
 	],
 };
