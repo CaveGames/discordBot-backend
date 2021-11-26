@@ -11,6 +11,9 @@ module.exports = {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
+		channelId: {
+			type: DataTypes.STRING,
+		},
 		category: {
 			type: DataTypes.INTEGER,
 			allowNull: false,

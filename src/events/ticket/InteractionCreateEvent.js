@@ -38,6 +38,11 @@ module.exports = {
 			const id = String(ticket.id).padStart(4, '0');
 
 			const channel = await interaction.guild.channels.create(id + '-' + member.user.username, {
+				topic:
+					':' +
+					config.tickets.categories[interaction.values[0]].emoji +
+					': ' +
+					config.tickets.categories[interaction.values[0]].name,
 				type: 'GUILD_TEXT',
 				parent: config.tickets.categories[interaction.values[0]].categoryId,
 				position: 0,
