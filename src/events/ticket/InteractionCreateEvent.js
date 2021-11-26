@@ -17,6 +17,12 @@ module.exports = {
 				},
 			});
 
+			Tickets.create({
+				guildId: interaction.guild.id,
+				ownerId: interaction.user.id,
+				category: interaction.values[0],
+			});
+
 			interaction.reply({
 				embeds: [
 					{
