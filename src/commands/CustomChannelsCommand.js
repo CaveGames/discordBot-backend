@@ -53,24 +53,24 @@ module.exports = {
 		if (args[0] == 'private' || args[0] == 'public') {
 			if (customChannel.isPrivateChannel) {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { CONNECT: null });
-				CustomChannels.update({ isPrivateChannel: false, isHidden: false }, { where: { id: customChannel.id } });
+				customChannel.update({ isPrivateChannel: false, isHidden: false });
 				message.reply('Set to public');
 			}
 			else {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { CONNECT: false });
-				CustomChannels.update({ isPrivateChannel: true }, { where: { id: customChannel.id } });
+				customChannel.update({ isPrivateChannel: true });
 				message.reply('Set to private');
 			}
 		}
 		else if (args[0] == 'hide' || args[0] == 'show') {
 			if (customChannel.isHidden) {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { VIEW_CHANNEL: null });
-				CustomChannels.update({ isHidden: false }, { where: { id: customChannel.id } });
+				customChannel.update({ isHidden: false });
 				message.reply('Set to shown');
 			}
 			else {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { VIEW_CHANNEL: false });
-				CustomChannels.update({ isHidden: true }, { where: { id: customChannel.id } });
+				customChannel.update({ isHidden: true });
 				message.reply('Set to hidden');
 			}
 		}
