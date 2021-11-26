@@ -44,6 +44,7 @@ Object.keys(models).forEach(key => {
 				console.log(definition.name + ' has one ' + association.table);
 				break;
 			default:
+				console.log('Unknown association ' + association.type + ' from ' + association.table);
 				break;
 			}
 		});
