@@ -39,6 +39,10 @@ Object.keys(models).forEach(key => {
 				models[definition.name].hasMany(models[association.table], association.options);
 				console.log(definition.name + ' has many ' + association.table);
 				break;
+			case 'hasOne':
+				models[definition.name].hasOne(models[association.table], association.options);
+				console.log(definition.name + ' has one ' + association.table);
+				break;
 			default:
 				break;
 			}
