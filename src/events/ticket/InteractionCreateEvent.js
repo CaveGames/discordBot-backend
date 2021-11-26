@@ -1,4 +1,5 @@
 const { UserData, Tickets } = require('../../database').models;
+const { Permissions } = require('discord.js');
 const config = require('../../../config.json');
 
 module.exports = {
@@ -27,10 +28,32 @@ module.exports = {
 				}
 			}
 
-			Tickets.create({
+			const ticket = await Tickets.create({
 				guildId: interaction.guild.id,
 				ownerId: interaction.user.id,
 				category: interaction.values[0],
+			});
+
+			const id = String(ticket.id).padStart(4, '0');
+
+			const channel = await interaction.guild.channels.create(id + '-' + member.user.username, {
+				type: 'GUILD_TEXT',
+				parent: config.tickets.categories[interaction.values[0]].categoryId,
+				position: 0,
+				permissionOverwrites: [
+					{
+						id: interaction.guild.roles.everyone,
+						deny: [Permissions.FLAGS.VIEW_CHANNEL],
+					},
+					{
+						id: member.user.id,
+						allow: [Permissions.FLAGS.VIEW_CHANNEL],
+					},
+					{
+						id: config.tickets.supporterRoleId,
+						allow: [Permissions.FLAGS.VIEW_CHANNEL],
+					},
+				],
 			});
 
 			interaction.reply({
@@ -38,7 +61,9 @@ module.exports = {
 					{
 						title: 'Ticket System',
 						description:
-							'Ticket angelegt! Beschreibe dein Anliegen in CHANNEL genauer.\nEin Teammitglied wird sich gleich um dein Problem kümmern.',
+							'Ticket angelegt! Beschreibe dein Anliegen in <#' +
+							channel.id +
+							'> genauer.\nEin Teammitglied wird sich gleich um dein Problem kümmern.',
 						color: config.accentColor,
 					},
 				],
