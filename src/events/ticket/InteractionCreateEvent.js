@@ -62,6 +62,10 @@ module.exports = {
 				],
 			});
 
+			ticket.update({
+				channelId: channel.id,
+			});
+
 			channel.send({
 				embeds: [
 					{
