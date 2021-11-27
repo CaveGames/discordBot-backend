@@ -1,5 +1,6 @@
 const { Client } = require('discord.js');
 const { registerCommands, registerEvents } = require('./utils/registry');
+require('./web');
 
 const config = require('../config.json');
 
@@ -17,11 +18,3 @@ const client = new Client({
 
 	client.user.setActivity('SAO');
 })();
-
-const httpServer = require('http').createServer();
-require('socket.io')(httpServer, {
-	cors: {
-		origin: 'http://localhost:8080',
-	},
-});
-httpServer.listen(3000);
