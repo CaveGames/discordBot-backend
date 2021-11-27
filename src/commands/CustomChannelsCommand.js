@@ -54,10 +54,10 @@ module.exports = {
 		}
 
 		if (args[0] == 'private' || args[0] == 'public') {
-			if (customChannel.isPrivateChannel) {
-				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { CONNECT: null });
+			if (customChannel.isPrivate) {
+				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { CONNECT: null, VIEW_CHANNEL: null });
 				customChannel.update({
-					isPrivateChannel: false,
+					isPrivate: false,
 					isHidden: false,
 				});
 				message.reply('Set to public');
@@ -65,7 +65,7 @@ module.exports = {
 			else {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { CONNECT: false });
 				customChannel.update({
-					isPrivateChannel: true,
+					isPrivate: true,
 				});
 				message.reply('Set to private');
 			}

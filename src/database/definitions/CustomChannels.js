@@ -15,7 +15,7 @@ module.exports = {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
-		isPrivateChannel: {
+		isPrivate: {
 			type: DataTypes.BOOLEAN,
 			defaultValue: false,
 			allowNull: false,
