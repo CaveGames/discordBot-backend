@@ -1,4 +1,4 @@
-const { CustomChannels, CustomChannelBans } = require('../database').models;
+const { CustomChannels, CustomChannelBans, UserData } = require('../database').models;
 
 const config = require('../../config.json');
 
@@ -8,7 +8,10 @@ module.exports = {
 	async run(client, message, args) {
 		const member = message.guild.members.cache.get(message.author.id);
 		const customChannel = await CustomChannels.findOne({
-			where: { guildId: message.guild.id, channelId: member.voice.channelId },
+			where: {
+				guildId: message.guild.id,
+				channelId: member.voice.channelId,
+			},
 		});
 
 		if (!customChannel) {
@@ -26,7 +29,7 @@ module.exports = {
 						fields: [
 							{
 								name: 'Eigentümer',
-								value: '<@' + customChannel.userId + '>',
+								value: '<@' + customChannel.ownerId + '>',
 							},
 							{
 								name: 'Status',
@@ -53,24 +56,33 @@ module.exports = {
 		if (args[0] == 'private' || args[0] == 'public') {
 			if (customChannel.isPrivateChannel) {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { CONNECT: null });
-				customChannel.update({ isPrivateChannel: false, isHidden: false });
+				customChannel.update({
+					isPrivateChannel: false,
+					isHidden: false,
+				});
 				message.reply('Set to public');
 			}
 			else {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { CONNECT: false });
-				customChannel.update({ isPrivateChannel: true });
+				customChannel.update({
+					isPrivateChannel: true,
+				});
 				message.reply('Set to private');
 			}
 		}
 		else if (args[0] == 'hide' || args[0] == 'show') {
 			if (customChannel.isHidden) {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { VIEW_CHANNEL: null });
-				customChannel.update({ isHidden: false });
+				customChannel.update({
+					isHidden: false,
+				});
 				message.reply('Set to shown');
 			}
 			else {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { VIEW_CHANNEL: false });
-				customChannel.update({ isHidden: true });
+				customChannel.update({
+					isHidden: true,
+				});
 				message.reply('Set to hidden');
 			}
 		}
@@ -117,25 +129,26 @@ module.exports = {
 				return;
 			}
 
-			const ban = await CustomChannelBans.findOne({
-				where: { CustomChannelId: customChannel.id, userId: banMember.user.id },
+			const banMemberData = await UserData.findOne({
+				where: {
+					guildId: message.guild.id,
+					userId: banMember.user.id,
+				},
+				include: 'customChannelBans',
 			});
 
+			const ban = banMemberData.customChannelBans.find(x => x.customChannelId == customChannel.id);
+
 			if (ban) {
-				CustomChannelBans.destroy({
-					where: {
-						CustomChannelId: customChannel.id,
-						userId: banMember.user.id,
-					},
-				});
+				ban.destroy();
 
 				channel.permissionOverwrites.edit(banMember.user.id, { CONNECT: null });
 				message.reply('Unbanned user');
 			}
 			else {
 				CustomChannelBans.create({
-					CustomChannelId: customChannel.id,
-					userId: banMember.user.id,
+					customChannelId: customChannel.id,
+					userId: banMemberData.id,
 				});
 
 				channel.permissionOverwrites.edit(banMember.user.id, { CONNECT: false });

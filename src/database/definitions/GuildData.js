@@ -21,15 +21,17 @@ module.exports = {
 	associations: [
 		{
 			type: 'hasMany',
-			table: 'CustomChannels',
+			table: 'UserData',
 			options: {
+				as: 'users',
 				foreignKey: 'guildId',
 			},
 		},
 		{
 			type: 'hasMany',
-			table: 'UserData',
+			table: 'CustomChannels',
 			options: {
+				as: 'customChannels',
 				foreignKey: 'guildId',
 			},
 		},
@@ -37,6 +39,7 @@ module.exports = {
 			type: 'hasMany',
 			table: 'Tickets',
 			options: {
+				as: 'tickets',
 				foreignKey: 'guildId',
 			},
 		},

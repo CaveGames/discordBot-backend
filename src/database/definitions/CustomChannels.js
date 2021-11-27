@@ -11,8 +11,8 @@ module.exports = {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
-		userId: {
-			type: DataTypes.STRING,
+		ownerId: {
+			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
 		isPrivateChannel: {
@@ -31,10 +31,17 @@ module.exports = {
 			type: 'belongsTo',
 			table: 'GuildData',
 			options: {
-				foreignKey: {
-					name: 'guildId',
-				},
+				as: 'guild',
+				foreignKey: 'guildId',
 				onDelete: 'CASCADE',
+			},
+		},
+		{
+			type: 'belongsTo',
+			table: 'UserData',
+			options: {
+				as: 'owner',
+				foreignKey: 'ownerId',
 			},
 		},
 		{
@@ -42,6 +49,7 @@ module.exports = {
 			table: 'CustomChannelBans',
 			options: {
 				as: 'bans',
+				foreignKey: 'customChannelId',
 			},
 		},
 	],

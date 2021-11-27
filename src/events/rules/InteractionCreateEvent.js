@@ -30,16 +30,9 @@ module.exports = {
 				member.roles.add(interaction.guild.roles.cache.get(role));
 			});
 
-			UserData.update(
-				{
-					isVerified: true,
-				},
-				{
-					where: {
-						userId: userData.userId,
-					},
-				},
-			);
+			userData.update({
+				isVerified: true,
+			});
 
 			interaction.reply({
 				embeds: [

@@ -2,7 +2,7 @@
 const config = require('../../../config.json');
 
 const { Permissions } = require('discord.js');
-const { CustomChannels } = require('../../database').models;
+const { CustomChannels, UserData } = require('../../database').models;
 
 module.exports = {
 	name: 'voiceStateUpdate',
@@ -23,12 +23,18 @@ module.exports = {
 			if (channel.members.size == 0) {
 				channel.delete();
 
-				CustomChannels.destroy({ where: { id: customChannel.id } });
+				customChannel.destroy();
 			}
 		}
 
 		if (newState.channelId == config.customChannels.channelId) {
 			const member = newState.guild.members.cache.get(newState.id);
+			const userData = await UserData.findOne({
+				where: {
+					guildId: newState.guild.id,
+					userId: member.user.id,
+				},
+			});
 
 			const channel = await newState.guild.channels.create('Talk: ' + member.user.username, {
 				type: 'GUILD_VOICE',
@@ -44,7 +50,7 @@ module.exports = {
 			CustomChannels.create({
 				guildId: newState.guild.id,
 				channelId: channel.id,
-				userId: member.user.id,
+				ownerId: userData.id,
 			});
 
 			member.voice.setChannel(channel);

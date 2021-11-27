@@ -8,7 +8,7 @@ module.exports = {
 			allowNull: false,
 		},
 		ownerId: {
-			type: DataTypes.STRING,
+			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
 		channelId: {
@@ -32,7 +32,7 @@ module.exports = {
 			type: DataTypes.DATE,
 		},
 		closedUserId: {
-			type: DataTypes.STRING,
+			type: DataTypes.INTEGER,
 		},
 	},
 	associations: [
@@ -40,9 +40,8 @@ module.exports = {
 			type: 'belongsTo',
 			table: 'GuildData',
 			options: {
-				foreignKey: {
-					name: 'guildId',
-				},
+				as: 'guild',
+				foreignKey: 'guildId',
 				onDelete: 'CASCADE',
 			},
 		},
@@ -50,20 +49,16 @@ module.exports = {
 			type: 'belongsTo',
 			table: 'UserData',
 			options: {
-				as: 'tickets',
-				foreignKey: {
-					name: 'ownerId',
-				},
+				as: 'owner',
+				foreignKey: 'ownerId',
 			},
 		},
 		{
 			type: 'belongsTo',
 			table: 'UserData',
 			options: {
-				as: 'closedTickets',
-				foreignKey: {
-					name: 'closedUserId',
-				},
+				as: 'closedUser',
+				foreignKey: 'closedUserId',
 			},
 		},
 	],

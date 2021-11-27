@@ -6,12 +6,10 @@ module.exports = {
 		userId: {
 			type: DataTypes.STRING,
 			allowNull: false,
-			primaryKey: true,
 		},
 		guildId: {
 			type: DataTypes.STRING,
 			allowNull: false,
-			primaryKey: true,
 		},
 		firstJoinDate: {
 			type: DataTypes.DATE,
@@ -29,10 +27,25 @@ module.exports = {
 			type: 'belongsTo',
 			table: 'GuildData',
 			options: {
-				foreignKey: {
-					name: 'guildId',
-				},
+				as: 'guild',
+				foreignKey: 'guildId',
 				onDelete: 'CASCADE',
+			},
+		},
+		{
+			type: 'hasOne',
+			table: 'CustomChannels',
+			options: {
+				as: 'customChannel',
+				foreignKey: 'ownerId',
+			},
+		},
+		{
+			type: 'hasMany',
+			table: 'CustomChannelBans',
+			options: {
+				as: 'customChannelBans',
+				foreignKey: 'userId',
 			},
 		},
 		{
@@ -40,9 +53,7 @@ module.exports = {
 			table: 'Tickets',
 			options: {
 				as: 'tickets',
-				foreignKey: {
-					name: 'ownerId',
-				},
+				foreignKey: 'ownerId',
 			},
 		},
 		{
@@ -50,9 +61,7 @@ module.exports = {
 			table: 'Tickets',
 			options: {
 				as: 'closedTickets',
-				foreignKey: {
-					name: 'closedUserId',
-				},
+				foreignKey: 'closedUserId',
 			},
 		},
 	],

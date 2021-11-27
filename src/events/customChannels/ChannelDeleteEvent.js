@@ -6,11 +6,14 @@ module.exports = {
 
 	async run(client, channel) {
 		const customChannel = await CustomChannels.findOne({
-			where: { guildId: channel.guild.id, channelId: channel.id },
+			where: {
+				guildId: channel.guild.id,
+				channelId: channel.id,
+			},
 		});
 
 		if (customChannel) {
-			CustomChannels.destroy({ where: { id: customChannel.id } });
+			customChannel.destroy();
 		}
 	},
 };

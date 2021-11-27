@@ -29,7 +29,7 @@ module.exports = {
 
 			const ticket = await Tickets.create({
 				guildId: interaction.guild.id,
-				ownerId: interaction.user.id,
+				ownerId: userData.id,
 				category: interaction.values[0],
 			});
 
@@ -115,6 +115,13 @@ module.exports = {
 
 			if (!ticket) return;
 
+			const userData = await UserData.findOne({
+				where: {
+					guildId: interaction.guild.id,
+					userId: interaction.user.id,
+				},
+			});
+
 			const channel = interaction.guild.channels.cache.get(interaction.channelId);
 			channel.delete();
 
@@ -122,7 +129,7 @@ module.exports = {
 				channelId: null,
 				isOpen: false,
 				closedDate: Date.now(),
-				closedUserId: interaction.user.id,
+				closedUserId: userData.id,
 			});
 		}
 	},
