@@ -14,18 +14,18 @@ module.exports = {
 			},
 		});
 
-		if (userData) {
-			if (userData.isVerified) {
-				config.rules.verifiedRoleIds.forEach(role => {
-					member.roles.add(member.guild.roles.cache.get(role));
-				});
-			}
+		if (userData && userData.isVerified) {
+			config.rules.verifiedRoleIds.forEach(role => {
+				member.roles.add(member.guild.roles.cache.get(role));
+			});
 		}
 		else {
-			UserData.create({
-				guildId: member.guild.id,
-				userId: member.user.id,
-			});
+			if (!userData) {
+				UserData.create({
+					guildId: member.guild.id,
+					userId: member.user.id,
+				});
+			}
 
 			config.rules.unverifiedRoleIds.forEach(role => {
 				member.roles.add(member.guild.roles.cache.get(role));
