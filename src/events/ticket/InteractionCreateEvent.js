@@ -9,7 +9,15 @@ module.exports = {
 	async run(client, interaction) {
 		const member = interaction.guild.members.cache.get(interaction.user.id);
 
-		if (interaction.componentType == 'SELECT_MENU' && interaction.customId == 'ticket_select') {
+		if (interaction.customId == 'ticket_select') {
+			let categoryId;
+			if (interaction.componentType == 'SELECT_MENU') {
+				categoryId = interaction.values[0];
+			}
+			else if (interaction.componentType == 'BUTTON') {
+				categoryId = 0;
+			}
+
 			const userData = await UserData.findOne({
 				where: {
 					guildId: interaction.guild.id,
@@ -19,10 +27,15 @@ module.exports = {
 			});
 
 			if (userData.tickets.length > 0) {
-				const foundTicket = userData.tickets.find(x => x.category == interaction.values[0] && x.isOpen);
+				const foundTicket = userData.tickets.find(x => x.category == categoryId && x.isOpen);
 
 				if (foundTicket) {
-					interaction.reply({ content: ':x: Du hast bereits ein Ticket dieser Kategorie offen.', ephemeral: true });
+					if (interaction.componentType == 'SELECT_MENU') {
+						interaction.reply({ content: ':x: Du hast bereits ein Ticket dieser Kategorie offen.', ephemeral: true });
+					}
+					else {
+						interaction.reply({ content: ':x: Du hast bereits ein Ticket offen.', ephemeral: true });
+					}
 					return;
 				}
 			}
@@ -30,19 +43,15 @@ module.exports = {
 			const ticket = await Tickets.create({
 				guildId: interaction.guild.id,
 				ownerId: userData.id,
-				category: interaction.values[0],
+				category: categoryId,
 			});
 
 			const id = String(ticket.id).padStart(4, '0');
 
 			const channel = await interaction.guild.channels.create(id + '-' + member.user.username, {
-				topic:
-					':' +
-					config.tickets.categories[interaction.values[0]].emoji +
-					': ' +
-					config.tickets.categories[interaction.values[0]].name,
+				topic: ':' + config.tickets.categories[categoryId].emoji + ': ' + config.tickets.categories[categoryId].name,
 				type: 'GUILD_TEXT',
-				parent: config.tickets.categories[interaction.values[0]].categoryId,
+				parent: config.tickets.categories[categoryId].categoryId,
 				position: 0,
 				permissionOverwrites: [
 					{
