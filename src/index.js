@@ -1,6 +1,5 @@
 const { Client } = require('discord.js');
 const { registerCommands, registerEvents } = require('./utils/registry');
-require('./web');
 
 const config = require('../config.json');
 
@@ -18,3 +17,7 @@ const client = new Client({
 
 	client.user.setActivity('SAO');
 })();
+
+if (config.enableApi) {
+	require('./web');
+}
