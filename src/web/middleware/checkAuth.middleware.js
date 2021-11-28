@@ -12,7 +12,13 @@ module.exports = async (req, res, next) => {
 			},
 		});
 
-		req.user = userRes.data;
+		const user = {};
+		user.id = userRes.data.id;
+		user.username = userRes.data.username;
+		user.avatar = userRes.data.avatar;
+		user.discriminator = userRes.data.discriminator;
+
+		req.user = user;
 		next();
 	}
 	catch (err) {
