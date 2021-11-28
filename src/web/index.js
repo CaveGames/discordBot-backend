@@ -1,5 +1,18 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
+const bodyParser = require('body-parser');
+
+app.use(
+	cors({
+		origin: 'http://localhost:8080',
+		credentials: true,
+	}),
+);
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require('socket.io');
@@ -11,8 +24,17 @@ const io = new Server(server, {
 	},
 });
 
-app.get('/', (req, res) => {
-	res.send('Hello World');
+const usersRouter = require('./routes/users.routes');
+const router = express.Router();
+
+router.use('/users', usersRouter);
+
+app.use('/api', router);
+
+app.use(function(req, res, next) {
+	res.status(404).json({
+		message: 'No such route exists',
+	});
 });
 
 server.listen(3000, () => {
