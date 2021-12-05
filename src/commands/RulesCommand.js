@@ -23,22 +23,22 @@ module.exports = {
 			}),
 		);
 
-		channel.send({
-			embeds: embeds,
+		const acceptButton = {
+			type: 1,
 			components: [
 				{
-					type: 1,
-					components: [
-						{
-							type: 2,
-							style: 3,
-							label: 'Regeln akzeptieren',
-							emoji: emoji.getUnicode('heavy_check_mark'),
-							custom_id: 'accept_rules',
-						},
-					],
+					type: 2,
+					style: 3,
+					label: 'Regeln akzeptieren',
+					emoji: emoji.getUnicode('heavy_check_mark'),
+					custom_id: 'accept_rules',
 				},
 			],
+		};
+
+		channel.send({
+			embeds: embeds,
+			components: config.rules.usingRulesSplash ? [] : [acceptButton],
 		});
 	},
 };
