@@ -6,6 +6,7 @@ module.exports = {
 
 	async run(client, interaction) {
 		if (interaction.componentType != 'BUTTON') return;
+		if (config.rules.usingRulesSplash) return;
 
 		if (interaction.customId == 'accept_rules') {
 			const member = interaction.guild.members.cache.get(interaction.user.id);
