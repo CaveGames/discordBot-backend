@@ -7,6 +7,8 @@ const client = new Client({
 	intents: 32767,
 });
 
+global.client = client;
+
 (async () => {
 	client.commands = new Map();
 	client.events = new Map();
