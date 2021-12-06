@@ -4,7 +4,6 @@ const cors = require('cors');
 
 app.use(
 	cors({
-		origin: 'http://localhost:8080',
 		credentials: true,
 	}),
 );
@@ -37,5 +36,5 @@ app.use(function(req, res, next) {
 });
 
 server.listen(3000, () => {
-	console.log('Lisitening on Web');
+	console.log('Listening on Web');
 });

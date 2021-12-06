@@ -19,5 +19,5 @@ const client = new Client({
 })();
 
 if (config.enableApi) {
-	require('./web');
+	require('./api');
 }
