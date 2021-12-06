@@ -22,9 +22,11 @@ const io = new Server(server, {
 	},
 });
 
+const guildsRouter = require('./routes/guilds.routes');
 const usersRouter = require('./routes/users.routes');
 const router = express.Router();
 
+router.use('/guilds', guildsRouter);
 router.use('/users', usersRouter);
 
 app.use('/api', router);
