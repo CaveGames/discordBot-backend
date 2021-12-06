@@ -12,6 +12,7 @@ module.exports = {
 				guildId: message.guild.id,
 				channelId: member.voice.channelId,
 			},
+			include: 'owner',
 		});
 
 		if (!customChannel) {
@@ -29,11 +30,11 @@ module.exports = {
 						fields: [
 							{
 								name: 'Eigentümer',
-								value: '<@' + customChannel.ownerId + '>',
+								value: '<@' + customChannel.owner.userId + '>',
 							},
 							{
 								name: 'Status',
-								value: customChannel.isPrivateChannel ? 'Privat' : 'Öffentlich',
+								value: customChannel.isPrivate ? 'Privat' : 'Öffentlich',
 								inline: true,
 							},
 							{
