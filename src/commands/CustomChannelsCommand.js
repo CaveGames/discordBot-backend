@@ -16,7 +16,7 @@ module.exports = {
 		});
 
 		if (!customChannel) {
-			message.reply('Connect to a custom Channel first');
+			message.reply({ content: ':x: Du befindest dich in keinem CustomChannel!' });
 			return;
 		}
 
@@ -50,7 +50,7 @@ module.exports = {
 		}
 
 		if (customChannel.userId != member.user.id && !member.roles.cache.get(config.customChannels.bypassRoleId)) {
-			message.reply('Not your Channel!');
+			message.reply({ content: ':x: Das ist nicht dein Kanal!' });
 			return;
 		}
 
@@ -61,14 +61,14 @@ module.exports = {
 					isPrivate: false,
 					isHidden: false,
 				});
-				message.reply('Set to public');
+				message.reply({ content: ':white_check_mark: Der Kanal wurde auf öffentlich gestellt.' });
 			}
 			else {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { CONNECT: false });
 				customChannel.update({
 					isPrivate: true,
 				});
-				message.reply('Set to private');
+				message.reply({ content: ':white_check_mark: Der Kanal wurde auf privat gestellt.' });
 			}
 		}
 		else if (args[0] == 'hide' || args[0] == 'show') {
@@ -77,35 +77,35 @@ module.exports = {
 				customChannel.update({
 					isHidden: false,
 				});
-				message.reply('Set to shown');
+				message.reply({ content: ':white_check_mark: Der Kanal wurde für alle Nutzer sichtbar gemacht.' });
 			}
 			else {
 				channel.permissionOverwrites.edit(message.guild.roles.everyone.id, { VIEW_CHANNEL: false });
 				customChannel.update({
 					isHidden: true,
 				});
-				message.reply('Set to hidden');
+				message.reply({ content: ':white_check_mark: Der Kanal wurde vor anderen Nutzern verborgen.' });
 			}
 		}
 		else if (args[0] == 'kick') {
 			const kickUser = message.mentions.users.first();
 
 			if (!kickUser) {
-				message.reply('Please select a user');
+				message.reply({ content: `:x: Bitte verwende **${config.prefix}${this.command} kick [Benutzername]**` });
 				return;
 			}
 
 			const kickMember = message.guild.members.cache.get(kickUser.id);
 			if (!kickMember.voice.channelId || kickMember.voice.channelId != customChannel.channelId) {
-				message.reply('User isnt in your Channel');
+				message.reply({ content: ':x: Dieser Nutzer ist aktuell nicht in deinem Kanal!' });
 				return;
 			}
 			if (kickMember.user.id == member.user.id) {
-				message.reply('You cant kick yourself out!');
+				message.reply({ content: ':x: Du kannst dich nicht selbst kicken!' });
 				return;
 			}
 			if (kickMember.roles.cache.get(config.customChannels.bypassRoleId)) {
-				message.reply('You cant kick this user!');
+				message.reply({ content: ':x: Du darfst diesen Nutzer nicht kicken!' });
 				return;
 			}
 
@@ -116,17 +116,17 @@ module.exports = {
 			const banUser = message.mentions.users.first();
 
 			if (!banUser) {
-				message.reply('Please select a user');
+				message.reply({ content: `:x: Bitte verwende **${config.prefix}${this.command} ban [Benutzername]**` });
 				return;
 			}
 
 			const banMember = message.guild.members.cache.get(banUser.id);
 			if (banMember.user.id == member.user.id) {
-				message.reply('You cant ban yourself!');
+				message.reply({ content: ':x: Du kannst dich nicht selbst bannen!' });
 				return;
 			}
 			if (banMember.roles.cache.get(config.customChannels.bypassRoleId)) {
-				message.reply('You cant ban this user!');
+				message.reply({ content: ':x: Du darfst diesen Nutzer nicht bannen!' });
 				return;
 			}
 
@@ -144,7 +144,7 @@ module.exports = {
 				ban.destroy();
 
 				channel.permissionOverwrites.edit(banMember.user.id, { CONNECT: null });
-				message.reply('Unbanned user');
+				message.reply({ content: ':white_check_mark: Der Nutzer wurde entbannt.' });
 			}
 			else {
 				CustomChannelBans.create({
@@ -158,11 +158,11 @@ module.exports = {
 					banMember.voice.disconnect();
 				}
 
-				message.reply('Banned user');
+				message.reply({ content: ':white_check_mark: Der Nutzer wurde gebannt.' });
 			}
 		}
 		else {
-			message.reply('Invalid Argument');
+			message.reply({ content: ':x: Dieser Unterbefehl existiert nicht!' });
 		}
 	},
 };
