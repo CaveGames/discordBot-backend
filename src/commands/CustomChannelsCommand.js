@@ -27,6 +27,7 @@ module.exports = {
 				embeds: [
 					{
 						title: channel.name,
+						color: config.accentColor,
 						fields: [
 							{
 								name: 'Eigentümer',
