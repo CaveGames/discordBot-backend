@@ -111,7 +111,7 @@ module.exports = {
 			}
 
 			kickMember.voice.disconnect();
-			message.reply('Kicked user');
+			message.reply({ content: ':white_check_mark: Der Nutzer wurde gekickt.' });
 		}
 		else if (args[0] == 'ban' || args[0] == 'unban') {
 			const banUser = message.mentions.users.first();
