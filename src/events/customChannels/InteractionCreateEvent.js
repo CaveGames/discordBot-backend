@@ -75,5 +75,27 @@ module.exports = {
 				interaction.reply({ content: ':white_check_mark: Der Kanal wurde auf privat gestellt.', ephemeral: true });
 			}
 		}
+		else if (interaction.customId == 'cc_hide') {
+			if (customChannel.isHidden) {
+				channel.permissionOverwrites.edit(interaction.guild.roles.everyone.id, { VIEW_CHANNEL: null });
+				customChannel.update({
+					isHidden: false,
+				});
+				interaction.reply({
+					content: ':white_check_mark: Der Kanal wurde für alle Nutzer sichtbar gemacht.',
+					ephemeral: true,
+				});
+			}
+			else {
+				channel.permissionOverwrites.edit(interaction.guild.roles.everyone.id, { VIEW_CHANNEL: false });
+				customChannel.update({
+					isHidden: true,
+				});
+				interaction.reply({
+					content: ':white_check_mark: Der Kanal wurde vor anderen Nutzern verborgen.',
+					ephemeral: true,
+				});
+			}
+		}
 	},
 };
