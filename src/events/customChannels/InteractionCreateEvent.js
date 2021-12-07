@@ -97,5 +97,67 @@ module.exports = {
 				});
 			}
 		}
+		else if (interaction.customId == 'cc_kick') {
+			const options = [];
+
+			channel.members.forEach(currentMember => {
+				if (currentMember.user.id == member.user.id) return;
+				if (currentMember.roles.cache.get(config.customChannels.bypassRoleId)) return;
+
+				options.push({
+					label: currentMember.nickname ? currentMember.nickname : currentMember.user.username,
+					value: currentMember.user.id,
+				});
+			});
+
+			if (options.length == 0) {
+				interaction.reply({ content: ':x: Du darfst keinen der anwesenden Nutzer im Kanal kicken!', ephemeral: true });
+				return;
+			}
+
+			const responseMessage = await interaction.reply({
+				content: 'Wähle hier den Nutzer aus, welchen du kicken möchtest.',
+				components: [
+					{
+						type: 1,
+						components: [
+							{
+								type: 3,
+								custom_id: 'cc_kick_select',
+								options: options,
+							},
+						],
+					},
+				],
+				ephemeral: true,
+				fetchReply: true,
+			});
+
+			responseMessage
+				.awaitMessageComponent({ componentType: 'SELECT_MENU', time: 30000 })
+				.then(collectInteraction => {
+					const kickMember = collectInteraction.guild.members.cache.get(collectInteraction.values[0]);
+
+					if (!kickMember.voice.channelId || kickMember.voice.channelId != customChannel.channelId) {
+						interaction.editReply({
+							content: ':x: Dieser Nutzer ist nicht mehr in deinem Kanal!',
+							components: [],
+						});
+						return;
+					}
+
+					kickMember.voice.disconnect();
+					interaction.editReply({
+						content: ':white_check_mark: <@' + kickMember.id + '> wurde gekickt.',
+						components: [],
+					});
+				})
+				.catch(error => {
+					interaction.editReply({
+						content: ':x: Die Zeit zum auswählen ist abgelaufen!',
+						components: [],
+					});
+				});
+		}
 	},
 };
