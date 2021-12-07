@@ -18,6 +18,10 @@ module.exports = {
 			tickets(message);
 			return;
 		}
+		if (args[0] == 'customChannels') {
+			customChannels(message);
+			return;
+		}
 	},
 };
 
@@ -123,4 +127,81 @@ const tickets = async message => {
 			],
 		});
 	}
+};
+
+const customChannels = async message => {
+	const channel = message.channel;
+	const messages = await channel.messages.fetch();
+	messages.forEach(msg => msg.delete());
+
+	channel.send({
+		embeds: [
+			{
+				title: 'Custom Channels',
+				description:
+					'Custom Channels sind die perfekte Lösung um ungestört mit deinen Freunden zu chillen.\n' +
+					'Betritt den <#' +
+					config.customChannels.channelId +
+					'> Sprachkanal und erhalte deinen persönlichen, temporären Kanal, welchen du frei nach laune anpassen kannst.',
+				color: config.accentColor,
+			},
+			{
+				title: 'Funktionen',
+				description:
+					'**► Kanal-Infos**\n' +
+					'Zeigt dir Infos über den Custom Channel, in welchem du dich aktuell befindest.\n\n' +
+					'**► Nutzer kicken**\n' +
+					'Werfe Störenfriede ganz einfach aus deinem Kanal.\n\n' +
+					'**► Nutzer bannen**\n' +
+					'Wenn das raus werfen nicht reicht, dann sperre bestimmte Nutzer einfach komplett aus.\n\n' +
+					'**► Privat / Öffentlich**\n' +
+					'Sorge dafür, dass kein Nutzer deinen Kanal betreten darf.\n\n' +
+					'**► Verstecken / Zeigen**\n' +
+					'Verstecke deinen Kanal vor anderen Nutzern.',
+				color: config.accentColor,
+			},
+		],
+		components: [
+			{
+				type: 1,
+				components: [
+					{
+						type: 2,
+						style: 2,
+						label: 'Kanal-Infos',
+						custom_id: 'cc_info',
+					},
+				],
+			},
+			{
+				type: 1,
+				components: [
+					{
+						type: 2,
+						style: 4,
+						label: 'Nutzer kicken',
+						custom_id: 'cc_kick',
+					},
+					{
+						type: 2,
+						style: 4,
+						label: 'Nutzer bannen',
+						custom_id: 'cc_ban',
+					},
+					{
+						type: 2,
+						style: 1,
+						label: 'Privat / Öffentlich',
+						custom_id: 'cc_private',
+					},
+					{
+						type: 2,
+						style: 1,
+						label: 'Verstecken / Zeigen',
+						custom_id: 'cc_hide',
+					},
+				],
+			},
+		],
+	});
 };
