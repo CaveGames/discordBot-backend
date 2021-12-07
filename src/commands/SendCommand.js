@@ -156,7 +156,7 @@ const customChannels = async message => {
 					'Wenn das raus werfen nicht reicht, dann sperre bestimmte Nutzer einfach komplett aus.\n\n' +
 					'**► Privat / Öffentlich**\n' +
 					'Sorge dafür, dass kein Nutzer deinen Kanal betreten darf.\n\n' +
-					'**► Verstecken / Zeigen**\n' +
+					'**► Versteckt / Sichtbar**\n' +
 					'Verstecke deinen Kanal vor anderen Nutzern.',
 				color: config.accentColor,
 			},
@@ -197,7 +197,7 @@ const customChannels = async message => {
 					{
 						type: 2,
 						style: 1,
-						label: 'Verstecken / Zeigen',
+						label: 'Versteckt / Sichtbar',
 						custom_id: 'cc_hide',
 					},
 				],
