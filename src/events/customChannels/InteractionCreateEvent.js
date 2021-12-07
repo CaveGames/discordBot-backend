@@ -1,4 +1,4 @@
-const { CustomChannels } = require('../../database').models;
+const { UserData, CustomChannels, CustomChannelBans } = require('../../database').models;
 const config = require('../../../config.json');
 
 module.exports = {
@@ -151,6 +151,95 @@ module.exports = {
 						content: ':white_check_mark: <@' + kickMember.id + '> wurde gekickt.',
 						components: [],
 					});
+				})
+				.catch(error => {
+					interaction.editReply({
+						content: ':x: Die Zeit zum auswählen ist abgelaufen!',
+						components: [],
+					});
+				});
+		}
+		else if (interaction.customId == 'cc_ban') {
+			const options = [];
+
+			channel.guild.members.cache.forEach(currentMember => {
+				if (currentMember.user.bot) return;
+				if (currentMember.id == member.user.id) return;
+				if (currentMember.roles.cache.get(config.customChannels.bypassRoleId)) return;
+
+				options.push({
+					label: currentMember.nickname ? currentMember.nickname : currentMember.user.username,
+					value: currentMember.id,
+				});
+			});
+
+			const responseMessage = await interaction.reply({
+				content: 'Wähle hier den Nutzer aus, welchen du bannen möchtest.',
+				components: [
+					{
+						type: 1,
+						components: [
+							{
+								type: 3,
+								custom_id: 'cc_ban_select',
+								options: options,
+							},
+						],
+					},
+				],
+				ephemeral: true,
+				fetchReply: true,
+			});
+
+			responseMessage
+				.awaitMessageComponent({ componentType: 'SELECT_MENU', time: 30000 })
+				.then(async collectInteraction => {
+					const banMember = collectInteraction.guild.members.cache.get(collectInteraction.values[0]);
+
+					if (!banMember.voice.channelId || banMember.voice.channelId != customChannel.channelId) {
+						interaction.editReply({
+							content: ':x: Dieser Nutzer ist nicht in deinem Kanal!',
+							components: [],
+						});
+						return;
+					}
+
+					const banMemberData = await UserData.findOne({
+						where: {
+							guildId: collectInteraction.guild.id,
+							userId: banMember.user.id,
+						},
+						include: 'customChannelBans',
+					});
+
+					const ban = banMemberData.customChannelBans.find(x => x.customChannelId == customChannel.id);
+
+					if (ban) {
+						ban.destroy();
+
+						channel.permissionOverwrites.edit(banMember.user.id, { CONNECT: null });
+						interaction.editReply({
+							content: ':white_check_mark: Der Nutzer wurde entbannt.',
+							components: [],
+						});
+					}
+					else {
+						CustomChannelBans.create({
+							customChannelId: customChannel.id,
+							userId: banMemberData.id,
+						});
+
+						channel.permissionOverwrites.edit(banMember.user.id, { CONNECT: false });
+
+						if (banMember.voice.channelId && banMember.voice.channelId == customChannel.channelId) {
+							banMember.voice.disconnect();
+						}
+
+						interaction.editReply({
+							content: ':white_check_mark: Der Nutzer wurde gebannt.',
+							components: [],
+						});
+					}
 				})
 				.catch(error => {
 					interaction.editReply({
