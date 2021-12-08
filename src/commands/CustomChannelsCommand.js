@@ -50,7 +50,7 @@ module.exports = {
 			return;
 		}
 
-		if (customChannel.userId != member.user.id && !member.roles.cache.get(config.customChannels.bypassRoleId)) {
+		if (customChannel.owner.userId != member.user.id && !member.roles.cache.get(config.customChannels.bypassRoleId)) {
 			message.reply({ content: ':x: Das ist nicht dein Kanal!' });
 			return;
 		}
