@@ -152,8 +152,8 @@ const customChannels = async message => {
 					'Zeigt dir Infos über den Custom Channel, in welchem du dich aktuell befindest.\n\n' +
 					'**► Nutzer kicken**\n' +
 					'Werfe Störenfriede ganz einfach aus deinem Kanal.\n\n' +
-					'**► Nutzer bannen**\n' +
-					'Wenn das raus werfen nicht reicht, dann sperre bestimmte Nutzer einfach komplett aus.\n\n' +
+					// '**► Nutzer bannen**\n' +
+					// 'Wenn das raus werfen nicht reicht, dann sperre bestimmte Nutzer einfach komplett aus.\n\n' +
 					'**► Privat / Öffentlich**\n' +
 					'Sorge dafür, dass kein Nutzer deinen Kanal betreten darf.\n\n' +
 					'**► Versteckt / Sichtbar**\n' +
@@ -182,12 +182,12 @@ const customChannels = async message => {
 						label: 'Nutzer kicken',
 						custom_id: 'cc_kick',
 					},
-					{
-						type: 2,
-						style: 4,
-						label: 'Nutzer bannen',
-						custom_id: 'cc_ban',
-					},
+					// {
+					// 	type: 2,
+					// 	style: 4,
+					// 	label: 'Nutzer bannen',
+					// 	custom_id: 'cc_ban',
+					// },
 					{
 						type: 2,
 						style: 1,
