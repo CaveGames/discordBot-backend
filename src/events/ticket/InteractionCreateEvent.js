@@ -172,7 +172,7 @@ module.exports = {
 			logChannel.send({
 				embeds: [
 					{
-						title: 'Ticket angelegt︱Nr. ' + String(ticket.id).padStart(4, '0'),
+						title: 'Ticket geschlossen︱Nr. ' + String(ticket.id).padStart(4, '0'),
 						fields: [
 							{
 								name: 'Benutzer',
