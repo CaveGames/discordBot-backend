@@ -123,7 +123,6 @@ module.exports = {
 				embeds: [
 					{
 						title: 'Ticket angelegt︱Nr. ' + id,
-						color: config.accentColor,
 						fields: [
 							{
 								name: 'Benutzer',
@@ -174,7 +173,6 @@ module.exports = {
 				embeds: [
 					{
 						title: 'Ticket angelegt︱Nr. ' + String(ticket.id).padStart(4, '0'),
-						color: config.accentColor,
 						fields: [
 							{
 								name: 'Benutzer',
