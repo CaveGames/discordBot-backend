@@ -113,6 +113,37 @@ module.exports = {
 				],
 				ephemeral: true,
 			});
+
+			const logChannel = await interaction.guild.channels.fetch(config.tickets.logChannelId);
+			logChannel.send({
+				content:
+					'Ein lauter Hilfeschrei hallte durch die Gänge. Schnell eilte das <@&' +
+					config.tickets.supporterRoleId +
+					'> zur Hilfe!',
+				embeds: [
+					{
+						title: 'Ticket angelegt︱Nr. ' + id,
+						color: config.accentColor,
+						fields: [
+							{
+								name: 'Benutzer',
+								value: member.user.username + '#' + member.user.discriminator + '\n<@' + member.id + '>',
+							},
+							{
+								name: 'Kategorie',
+								value: config.tickets.categories[categoryId].name,
+							},
+							{
+								name: 'Kanal',
+								value: '<#' + channel.id + '>',
+							},
+						],
+						thumbnail: {
+							url: member.displayAvatarURL(),
+						},
+					},
+				],
+			});
 		}
 		else if (interaction.componentType == 'BUTTON' && interaction.customId == 'ticket_close') {
 			const ticket = await Tickets.findOne({
@@ -120,10 +151,12 @@ module.exports = {
 					guildId: interaction.guild.id,
 					channelId: interaction.channelId,
 				},
+				include: 'owner',
 			});
 
 			if (!ticket) return;
 
+			const ticketMember = await interaction.guild.members.fetch(ticket.owner.userId);
 			const userData = await UserData.findOne({
 				where: {
 					guildId: interaction.guild.id,
@@ -134,12 +167,67 @@ module.exports = {
 			const channel = interaction.guild.channels.cache.get(interaction.channelId);
 			channel.delete();
 
+			const closedDate = Date.now();
+
+			const logChannel = await interaction.guild.channels.fetch(config.tickets.logChannelId);
+			logChannel.send({
+				embeds: [
+					{
+						title: 'Ticket angelegt︱Nr. ' + String(ticket.id).padStart(4, '0'),
+						color: config.accentColor,
+						fields: [
+							{
+								name: 'Benutzer',
+								value:
+									ticketMember.user.username + '#' + ticketMember.user.discriminator + '\n<@' + ticketMember.id + '>',
+								inline: true,
+							},
+							{
+								name: 'Geschlossen von',
+								value:
+									interaction.user.username + '#' + interaction.user.discriminator + '\n<@' + interaction.user.id + '>',
+								inline: true,
+							},
+							{
+								name: 'Kategorie',
+								value: config.tickets.categories[ticket.category].name,
+							},
+							{
+								name: 'Dauer',
+								value: await getTimeDiff(ticket.openedDate, closedDate),
+							},
+						],
+						thumbnail: {
+							url: member.displayAvatarURL(),
+						},
+					},
+				],
+			});
+
 			ticket.update({
 				channelId: null,
 				isOpen: false,
-				closedDate: Date.now(),
+				closedDate: closedDate,
 				closedUserId: userData.id,
 			});
 		}
 	},
+};
+
+const getTimeDiff = async (date1, date2) => {
+	let delta = Math.abs(date1 - date2) / 1000;
+
+	const hours = Math.floor(delta / 3600) % 24;
+	delta -= hours * 3600;
+
+	const minutes = Math.floor(delta / 60) % 60;
+	delta -= minutes * 60;
+
+	const seconds = Math.floor(delta % 60);
+
+	let timeString = String(seconds).padStart(2, '0') + 's';
+	if (minutes > 0) timeString = String(minutes).padStart(2, '0') + 'm ' + timeString;
+	if (hours > 0) timeString = hours + 'h ' + timeString;
+
+	return timeString;
 };
