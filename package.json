@@ -18,6 +18,8 @@
 		"emoji-dictionary": "^1.0.11",
 		"express": "^4.17.1",
 		"mysql2": "^2.3.3",
+		"node-schedule": "^2.1.0",
+		"node-twitch": "^0.4.5",
 		"sequelize": "^6.6.5",
 		"socket.io": "^4.2.0"
 	},

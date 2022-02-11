@@ -23,3 +23,6 @@ global.client = client;
 if (config.enableApi) {
 	require('./api');
 }
+
+const cron = require('./cron');
+cron.run();
