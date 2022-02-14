@@ -45,8 +45,9 @@ async function sendLiveMessage(stream) {
 	console.log(stream);
 	if (stream.type != 'live') return;
 
-	const unixTime = Date.parse(stream.started_at);
-	if (Date.now() - 1000 * 60 > unixTime) return;
+	const ONE_MINUTE = 1000 * 60;
+	const streamTime = Date.parse(stream.started_at);
+	if (new Date() - streamTime > ONE_MINUTE) return;
 
 	const users = await twitch.getUsers(stream.user_id);
 	const user = users.data[0];
