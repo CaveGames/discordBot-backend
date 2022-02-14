@@ -42,7 +42,6 @@ async function checkForStreams() {
 }
 
 async function sendLiveMessage(stream) {
-	console.log(stream);
 	if (stream.type != 'live') return;
 
 	const ONE_MINUTE = 1000 * 60;
