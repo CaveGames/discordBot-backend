@@ -81,7 +81,7 @@ async function sendLiveMessage(stream) {
 
 	setTimeout(() => {
 		if (!message.deleted) message.delete();
-	}, 1000 * 60 * 12);
+	}, 1000 * 60 * 60 * 12);
 }
 
 module.exports = { cleanup, checkForStreams };
