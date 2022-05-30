@@ -10,7 +10,7 @@ async function clear() {
 
 	while (messages.size > 0) {
 		if (messages.size == 1) {
-			messages.forEach(msg => msg.delete());
+			messages[0].delete();
 			break;
 		}
 		channel.bulkDelete(100);
