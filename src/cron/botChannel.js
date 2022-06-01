@@ -18,12 +18,8 @@ async function clear() {
 	}
 }
 
-async function initClear() {
-	const guild = global.client.guilds.cache.get(config.guildId);
-	const channel = guild.channels.cache.get(config.botChannelId);
-
-	const messages = await channel.messages.fetch();
-	messages.forEach(msg => msg.delete());
+async function init() {
+	// TODO
 }
 
-module.exports = { clear, initClear };
+module.exports = { clear, init };

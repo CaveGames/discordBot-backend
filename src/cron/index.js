@@ -29,7 +29,7 @@ async function register() {
 
 async function init() {
 	console.log('Running Cron Initial Scripts...');
-	botChannel.initClear();
+	botChannel.init();
 }
 
 module.exports = { register, init };
