@@ -17,7 +17,7 @@ global.client = client;
 	await registerEvents(client, '../events');
 	await client.login(config.token);
 
-	client.user.setActivity('SAO');
+	// client.user.setActivity('SAO');
 })();
 
 if (config.enableApi) {
