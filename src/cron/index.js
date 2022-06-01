@@ -4,6 +4,7 @@ const schedule = require('node-schedule');
 const botChannel = require('./botChannel');
 
 async function register() {
+	console.log('Registering Cron Jobs...');
 	// // At every minute.
 	// schedule.scheduleJob('* * * * *', function() {
 	// 	if (!global.client.isReady) return;
@@ -26,4 +27,9 @@ async function register() {
 	});
 }
 
-module.exports.run = register;
+async function init() {
+	console.log('Running Cron Initial Scripts...');
+	botChannel.initClear();
+}
+
+module.exports = { register, init };

@@ -3,6 +3,7 @@
 	"enableApi": true,
 
 	"prefix": "!",
+	"guildId": "",
 	"adminRoleId": "",
 	"botChannelId": "",
 	"serverName": "JUNKIEEE & Peace",

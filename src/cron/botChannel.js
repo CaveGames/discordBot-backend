@@ -10,7 +10,7 @@ async function clear() {
 
 	while (messages.size > 0) {
 		if (messages.size == 1) {
-			messages[0].delete();
+			messages.forEach(msg => msg.delete());
 			break;
 		}
 		channel.bulkDelete(100);
@@ -18,4 +18,12 @@ async function clear() {
 	}
 }
 
-module.exports = { clear };
+async function initClear() {
+	const guild = global.client.guilds.cache.get(config.guildId);
+	const channel = guild.channels.cache.get(config.botChannelId);
+
+	const messages = await channel.messages.fetch();
+	messages.forEach(msg => msg.delete());
+}
+
+module.exports = { clear, initClear };

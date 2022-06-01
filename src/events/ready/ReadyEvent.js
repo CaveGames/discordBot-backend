@@ -6,6 +6,8 @@ module.exports = {
 	async run(client) {
 		connection.sync();
 
+		global.cron.init();
+
 		console.log(client.user.tag + ' has logged in.');
 	},
 };

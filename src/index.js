@@ -24,5 +24,5 @@ if (config.enableApi) {
 	require('./api');
 }
 
-const cron = require('./cron');
-cron.run();
+global.cron = require('./cron');
+global.cron.register();
