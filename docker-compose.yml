@@ -9,6 +9,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
       - .:/usr/app
+    restart: always
     depends_on:
       - sql
   sql:
@@ -27,3 +28,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
       - ./db-data:/var/lib/mysql
+    restart: always
