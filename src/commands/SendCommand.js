@@ -159,7 +159,9 @@ const customChannels = async message => {
 					'**► Versteckt / Sichtbar**\n' +
 					'Verstecke deinen Kanal vor anderen Nutzern.\n\n' +
 					'**► Privaten Textkanal erstellen**\n' +
-					'Erstelle einen Textkanal, welchen nur Benutzer sehen können, die aktuell im Custom Channel sind.\n\n',
+					'Erstelle einen Textkanal, welchen nur Benutzer sehen können, die aktuell im Custom Channel sind.\n\n' +
+					'**► Logging umschalten**\n' +
+					'Es werden Nachrichten in den Chat geschrieben, wenn Benutzer dem Custom Channel beitreten oder ihn verlassen.',
 				color: config.accentColor,
 			},
 		],
@@ -212,6 +214,12 @@ const customChannels = async message => {
 						style: 2,
 						label: 'Privaten Textkanal erstellen',
 						custom_id: 'cc_textChannel',
+					},
+					{
+						type: 2,
+						style: 2,
+						label: 'Logging umschalten',
+						custom_id: 'cc_logging',
 					},
 				],
 			},

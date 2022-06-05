@@ -37,16 +37,29 @@ module.exports = {
 			if (textChannel) {
 				textChannel.permissionOverwrites.edit(member.user.id, { VIEW_CHANNEL: null });
 			}
+
+			if (customChannelOld.logging) {
+				voiceChannel.send(
+					`:call_me: \`${member.nickname} (${member.user.username}#${member.user.discriminator})\` hat den Kanal verlassen.`,
+				);
+			}
 		}
 
 		const customChannelNew = await CustomChannels.findOne({
 			where: { guildId: newState.guild.id, voiceChannelId: newState.channelId },
 		});
 		if (customChannelNew) {
+			const voiceChannel = oldState.guild.channels.cache.get(customChannelNew.voiceChannelId);
 			const textChannel = oldState.guild.channels.cache.get(customChannelNew.textChannelId);
 
 			if (textChannel) {
 				textChannel.permissionOverwrites.edit(member.user.id, { VIEW_CHANNEL: true });
+			}
+
+			if (customChannelNew.logging) {
+				voiceChannel.send(
+					`:call_me: \`${member.nickname} (${member.user.username}#${member.user.discriminator})\` hat den Kanal betreten.`,
+				);
 			}
 
 			return;

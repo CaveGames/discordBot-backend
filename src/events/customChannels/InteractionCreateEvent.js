@@ -46,6 +46,11 @@ module.exports = {
 								value: customChannel.isHidden ? 'Versteckt' : 'Sichtbar',
 								inline: true,
 							},
+							{
+								name: 'Logging',
+								value: customChannel.logging ? 'Aktiv' : 'Inaktiv',
+								inline: true,
+							},
 						],
 					},
 				],
@@ -284,6 +289,28 @@ module.exports = {
 				content: `:white_check_mark: Der Textkanal <#${textChannel.id}> wurde erstellt.`,
 				ephemeral: true,
 			});
+		}
+		else if (interaction.customId == 'cc_logging') {
+			if (customChannel.logging) {
+				customChannel.update({
+					logging: false,
+				});
+
+				interaction.reply({
+					content: ':white_check_mark: Das Logging wurde deaktiviert.',
+					ephemeral: true,
+				});
+			}
+			else {
+				customChannel.update({
+					logging: true,
+				});
+
+				interaction.reply({
+					content: ':white_check_mark: Das Logging wurde aktiviert.',
+					ephemeral: true,
+				});
+			}
 		}
 	},
 };

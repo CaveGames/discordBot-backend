@@ -29,6 +29,11 @@ module.exports = {
 			defaultValue: false,
 			allowNull: false,
 		},
+		logging: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false,
+			allowNull: false,
+		},
 	},
 	associations: [
 		{
