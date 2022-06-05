@@ -157,7 +157,9 @@ const customChannels = async message => {
 					'**► Privat / Öffentlich**\n' +
 					'Sorge dafür, dass kein Nutzer deinen Kanal betreten darf.\n\n' +
 					'**► Versteckt / Sichtbar**\n' +
-					'Verstecke deinen Kanal vor anderen Nutzern.',
+					'Verstecke deinen Kanal vor anderen Nutzern.\n\n' +
+					'**► Privaten Textkanal erstellen**\n' +
+					'Erstelle einen Textkanal, welchen nur Benutzer sehen können, die aktuell im Custom Channel sind.\n\n',
 				color: config.accentColor,
 			},
 		],
@@ -199,6 +201,17 @@ const customChannels = async message => {
 						style: 1,
 						label: 'Versteckt / Sichtbar',
 						custom_id: 'cc_hide',
+					},
+				],
+			},
+			{
+				type: 1,
+				components: [
+					{
+						type: 2,
+						style: 2,
+						label: 'Privaten Textkanal erstellen',
+						custom_id: 'cc_textChannel',
 					},
 				],
 			},

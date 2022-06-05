@@ -1,5 +1,6 @@
 const { UserData, CustomChannels, CustomChannelBans } = require('../../database').models;
 const config = require('../../../config.json');
+const { Permissions } = require('discord.js');
 
 module.exports = {
 	name: 'interactionCreate',
@@ -12,7 +13,7 @@ module.exports = {
 		const customChannel = await CustomChannels.findOne({
 			where: {
 				guildId: interaction.guild.id,
-				channelId: member.voice.channelId,
+				voiceChannelId: member.voice.channelId,
 			},
 			include: 'owner',
 		});
@@ -22,7 +23,7 @@ module.exports = {
 			return;
 		}
 
-		const channel = interaction.guild.channels.cache.get(customChannel.channelId);
+		const channel = interaction.guild.channels.cache.get(customChannel.voiceChannelId);
 
 		if (interaction.customId == 'cc_info') {
 			interaction.reply({
@@ -138,7 +139,7 @@ module.exports = {
 				.then(collectInteraction => {
 					const kickMember = collectInteraction.guild.members.cache.get(collectInteraction.values[0]);
 
-					if (!kickMember.voice.channelId || kickMember.voice.channelId != customChannel.channelId) {
+					if (!kickMember.voice.channelId || kickMember.voice.channelId != customChannel.voiceChannelId) {
 						interaction.editReply({
 							content: ':x: Dieser Nutzer ist nicht mehr in deinem Kanal!',
 							components: [],
@@ -152,7 +153,7 @@ module.exports = {
 						components: [],
 					});
 				})
-				.catch(error => {
+				.catch(() => {
 					interaction.editReply({
 						content: ':x: Die Zeit zum auswählen ist abgelaufen!',
 						components: [],
@@ -196,7 +197,7 @@ module.exports = {
 				.then(async collectInteraction => {
 					const banMember = collectInteraction.guild.members.cache.get(collectInteraction.values[0]);
 
-					if (!banMember.voice.channelId || banMember.voice.channelId != customChannel.channelId) {
+					if (!banMember.voice.channelId || banMember.voice.channelId != customChannel.voiceChannelId) {
 						interaction.editReply({
 							content: ':x: Dieser Nutzer ist nicht in deinem Kanal!',
 							components: [],
@@ -231,7 +232,7 @@ module.exports = {
 
 						channel.permissionOverwrites.edit(banMember.user.id, { CONNECT: false });
 
-						if (banMember.voice.channelId && banMember.voice.channelId == customChannel.channelId) {
+						if (banMember.voice.channelId && banMember.voice.channelId == customChannel.voiceChannelId) {
 							banMember.voice.disconnect();
 						}
 
@@ -241,12 +242,48 @@ module.exports = {
 						});
 					}
 				})
-				.catch(error => {
+				.catch(() => {
 					interaction.editReply({
 						content: ':x: Die Zeit zum auswählen ist abgelaufen!',
 						components: [],
 					});
 				});
+		}
+		else if (interaction.customId == 'cc_textChannel') {
+			if (customChannel.textChannelId != null) {
+				interaction.reply({
+					content: `:x: Dieser Sprachkanal verfügt bereits über einen Textkanal. <#${customChannel.textChannelId}>`,
+					ephemeral: true,
+				});
+				return;
+			}
+			const textChannel = await interaction.guild.channels.create(channel.name, {
+				type: 'GUILD_TEXT',
+				parent: config.customChannels.categoryId,
+				permissionOverwrites: [
+					{
+						id: member.user.id,
+						allow: [Permissions.FLAGS.MANAGE_MESSAGES],
+					},
+					{
+						id: interaction.guild.roles.everyone.id,
+						deny: [Permissions.FLAGS.VIEW_CHANNEL],
+					},
+				],
+			});
+
+			customChannel.update({
+				textChannelId: textChannel.id,
+			});
+
+			channel.members.forEach(voiceMember => {
+				textChannel.permissionOverwrites.edit(voiceMember.user.id, { VIEW_CHANNEL: true });
+			});
+
+			interaction.reply({
+				content: `:white_check_mark: Der Textkanal <#${textChannel.id}> wurde erstellt.`,
+				ephemeral: true,
+			});
 		}
 	},
 };

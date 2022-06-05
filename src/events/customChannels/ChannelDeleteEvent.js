@@ -5,15 +5,36 @@ module.exports = {
 	name: 'channelDelete',
 
 	async run(client, channel) {
-		const customChannel = await CustomChannels.findOne({
-			where: {
-				guildId: channel.guild.id,
-				channelId: channel.id,
-			},
-		});
+		if (channel.type == 'GUILD_VOICE') {
+			const customChannel = await CustomChannels.findOne({
+				where: {
+					guildId: channel.guild.id,
+					voiceChannelId: channel.id,
+				},
+			});
 
-		if (customChannel) {
-			customChannel.destroy();
+			if (customChannel) {
+				const textChannel = channel.guild.channels.cache.get(customChannel.textChannelId);
+				if (textChannel) {
+					textChannel.delete();
+				}
+
+				customChannel.destroy();
+			}
+		}
+		else if (channel.type == 'GUILD_TEXT') {
+			const customChannel = await CustomChannels.findOne({
+				where: {
+					guildId: channel.guild.id,
+					textChannelId: channel.id,
+				},
+			});
+
+			if (customChannel) {
+				customChannel.update({
+					textChannelId: null,
+				});
+			}
 		}
 	},
 };

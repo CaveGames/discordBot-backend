@@ -10,25 +10,49 @@ module.exports = {
 	async run(client, oldState, newState) {
 		if (oldState.channelId == newState.channelId) return;
 
-		const customChannel = await CustomChannels.findOne({
-			where: { guildId: oldState.guild.id, channelId: oldState.channelId },
-		});
-		if (customChannel) {
-			const channel = oldState.guild.channels.cache.get(customChannel.channelId);
+		const member = newState.guild.members.cache.get(newState.id);
 
-			if (!channel) {
+		const customChannelOld = await CustomChannels.findOne({
+			where: { guildId: oldState.guild.id, voiceChannelId: oldState.channelId },
+		});
+		if (customChannelOld) {
+			const voiceChannel = oldState.guild.channels.cache.get(customChannelOld.voiceChannelId);
+			const textChannel = oldState.guild.channels.cache.get(customChannelOld.textChannelId);
+
+			if (!voiceChannel) {
 				return;
 			}
 
-			if (channel.members.size == 0) {
-				channel.delete();
+			if (voiceChannel.members.size == 0) {
+				voiceChannel.delete();
 
-				customChannel.destroy();
+				if (textChannel) {
+					textChannel.delete();
+				}
+
+				customChannelOld.destroy();
+				return;
+			}
+
+			if (textChannel) {
+				textChannel.permissionOverwrites.edit(member.user.id, { VIEW_CHANNEL: null });
 			}
 		}
 
+		const customChannelNew = await CustomChannels.findOne({
+			where: { guildId: newState.guild.id, voiceChannelId: newState.channelId },
+		});
+		if (customChannelNew) {
+			const textChannel = oldState.guild.channels.cache.get(customChannelNew.textChannelId);
+
+			if (textChannel) {
+				textChannel.permissionOverwrites.edit(member.user.id, { VIEW_CHANNEL: true });
+			}
+
+			return;
+		}
+
 		if (newState.channelId == config.customChannels.channelId) {
-			const member = newState.guild.members.cache.get(newState.id);
 			const userData = await UserData.findOne({
 				where: {
 					guildId: newState.guild.id,
@@ -36,7 +60,7 @@ module.exports = {
 				},
 			});
 
-			const channel = await newState.guild.channels.create('Talk: ' + member.user.username, {
+			const voiceChannel = await newState.guild.channels.create('Talk: ' + member.user.username, {
 				type: 'GUILD_VOICE',
 				parent: config.customChannels.categoryId,
 				permissionOverwrites: [
@@ -49,11 +73,11 @@ module.exports = {
 
 			CustomChannels.create({
 				guildId: newState.guild.id,
-				channelId: channel.id,
+				voiceChannelId: voiceChannel.id,
 				ownerId: userData.id,
 			});
 
-			member.voice.setChannel(channel);
+			member.voice.setChannel(voiceChannel);
 		}
 	},
 };

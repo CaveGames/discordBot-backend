@@ -7,9 +7,13 @@ module.exports = {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
-		channelId: {
+		voiceChannelId: {
 			type: DataTypes.STRING,
 			allowNull: false,
+		},
+		textChannelId: {
+			type: DataTypes.STRING,
+			allowNull: true,
 		},
 		ownerId: {
 			type: DataTypes.INTEGER,
