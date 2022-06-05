@@ -39,9 +39,16 @@ module.exports = {
 			}
 
 			if (customChannelOld.logging) {
-				voiceChannel.send(
-					`:call_me: \`${member.nickname} (${member.user.username}#${member.user.discriminator})\` hat den Kanal verlassen.`,
-				);
+				if (member.nickname) {
+					voiceChannel.send(
+						`:call_me: \`${member.nickname} (${member.user.username}#${member.user.discriminator})\` hat den Kanal verlassen.`,
+					);
+				}
+				else {
+					voiceChannel.send(
+						`:call_me: \`${member.user.username}#${member.user.discriminator}\` hat den Kanal verlassen.`,
+					);
+				}
 			}
 		}
 
@@ -57,9 +64,16 @@ module.exports = {
 			}
 
 			if (customChannelNew.logging) {
-				voiceChannel.send(
-					`:call_me: \`${member.nickname} (${member.user.username}#${member.user.discriminator})\` hat den Kanal betreten.`,
-				);
+				if (member.nickname) {
+					voiceChannel.send(
+						`:call_me: \`${member.nickname} (${member.user.username}#${member.user.discriminator})\` hat den Kanal betreten.`,
+					);
+				}
+				else {
+					voiceChannel.send(
+						`:call_me: \`${member.user.username}#${member.user.discriminator}\` hat den Kanal betreten.`,
+					);
+				}
 			}
 
 			return;
