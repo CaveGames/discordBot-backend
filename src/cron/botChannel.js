@@ -6,7 +6,7 @@ async function clear() {
 
 	let messages = await channel.messages.fetch();
 
-	if (messages.size == 0) return;
+	if (messages.size == 1) return;
 
 	while (messages.size > 0) {
 		if (messages.size == 1) {
@@ -42,7 +42,7 @@ async function init() {
 					'Mache den aktuellen Custom Channel (un)sichtbar.\n\n' +
 					'**► `!cc kick <@Benutzer>`**\n' +
 					'Werfe einen Nutzer aus dem Custom Channel.\n\n' +
-					'**► `!cc ban|unban`**\n' +
+					'**► `!cc ban|unban <@Benutzer>`**\n' +
 					'(Ent)banne einen Benutzer in dem Custom Channel.\n\n',
 				color: config.accentColor,
 			},
