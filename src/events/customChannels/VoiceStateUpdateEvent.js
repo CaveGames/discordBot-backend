@@ -14,6 +14,7 @@ module.exports = {
 
 		const customChannelOld = await CustomChannels.findOne({
 			where: { guildId: oldState.guild.id, voiceChannelId: oldState.channelId },
+			include: 'owner',
 		});
 		if (customChannelOld) {
 			const voiceChannel = oldState.guild.channels.cache.get(customChannelOld.voiceChannelId);
@@ -34,8 +35,8 @@ module.exports = {
 				return;
 			}
 
-			if (textChannel) {
-				textChannel.permissionOverwrites.edit(member.user.id, { VIEW_CHANNEL: null });
+			if (textChannel && member.user.id !== customChannelOld.owner.userId) {
+				textChannel.permissionOverwrites.delete(member.user.id);
 			}
 
 			if (customChannelOld.logging) {
