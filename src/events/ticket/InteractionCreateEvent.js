@@ -196,7 +196,7 @@ module.exports = {
 							},
 						],
 						thumbnail: {
-							url: member.displayAvatarURL(),
+							url: ticketMember.displayAvatarURL(),
 						},
 					},
 				],
