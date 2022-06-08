@@ -271,6 +271,10 @@ module.exports = {
 						allow: [Permissions.FLAGS.MANAGE_MESSAGES],
 					},
 					{
+						id: config.customChannels.bypassRoleId,
+						allow: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.MANAGE_MESSAGES],
+					},
+					{
 						id: interaction.guild.roles.everyone.id,
 						deny: [Permissions.FLAGS.VIEW_CHANNEL],
 					},
