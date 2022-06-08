@@ -17,13 +17,6 @@ async function clear() {
 		messages = channel.messages.fetch();
 	}
 
-	init();
-}
-
-async function init() {
-	const guild = global.client.guilds.cache.get(config.guildId);
-	const channel = guild.channels.cache.get(config.botChannelId);
-
 	channel.send({
 		embeds: [
 			{
@@ -50,4 +43,4 @@ async function init() {
 	});
 }
 
-module.exports = { clear, init };
+module.exports = { clear };
