@@ -263,6 +263,7 @@ module.exports = {
 				return;
 			}
 			const textChannel = await interaction.guild.channels.create(channel.name, {
+				topic: `<#${customChannel.voiceChannelId}>`,
 				type: 'GUILD_TEXT',
 				parent: config.customChannels.categoryId,
 				permissionOverwrites: [
