@@ -116,10 +116,7 @@ module.exports = {
 
 			const logChannel = await interaction.guild.channels.fetch(config.tickets.logChannelId);
 			logChannel.send({
-				content:
-					'Ein lauter Hilfeschrei hallte durch die Gänge. Schnell eilte das <@&' +
-					config.tickets.supporterRoleId +
-					'> zur Hilfe!',
+				content: `<@&${config.tickets.supporterRoleId}>`,
 				embeds: [
 					{
 						title: 'Ticket angelegt︱Nr. ' + id,
