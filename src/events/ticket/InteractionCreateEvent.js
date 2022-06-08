@@ -90,7 +90,7 @@ module.exports = {
 						components: [
 							{
 								type: 2,
-								style: 2,
+								style: 4,
 								label: 'Ticket schließen',
 								emoji: emoji.getUnicode('lock'),
 								custom_id: 'ticket_close',
@@ -145,6 +145,14 @@ module.exports = {
 			});
 		}
 		else if (interaction.componentType == 'BUTTON' && interaction.customId == 'ticket_close') {
+			if (!member.roles.cache.get(config.tickets.supporterRoleId)) {
+				interaction.reply({
+					content: ':x: Du kannst keine Tickets schließen!',
+					ephemeral: true,
+				});
+				return;
+			}
+
 			const ticket = await Tickets.findOne({
 				where: {
 					guildId: interaction.guild.id,
