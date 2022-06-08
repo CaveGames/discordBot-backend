@@ -95,6 +95,10 @@ module.exports = {
 						id: member.user.id,
 						allow: [Permissions.FLAGS.MANAGE_CHANNELS, Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.CONNECT],
 					},
+					{
+						id: config.customChannels.bypassRoleId,
+						allow: [Permissions.FLAGS.MANAGE_CHANNELS, Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.CONNECT],
+					},
 				],
 			});
 
